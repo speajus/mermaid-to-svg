@@ -1,9 +1,6 @@
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-
-const rootDir = path.resolve(__dirname, '..');
-
 /**
  * Vite plugin that swaps mermaid-setup.js imports for the browser version.
  * This removes the jsdom dependency from the browser bundle.
