@@ -16,16 +16,16 @@ function describeArc(
   return `M ${cx},${cy} L ${start.x},${start.y} A ${r},${r} 0 ${largeArc} 1 ${end.x},${end.y} Z`;
 }
 
-export function renderPieSvg(
+export function renderPieElement(
   layout: PieLayoutResult,
   theme: Theme,
   idPrefix: string = 'mermaid',
-): string {
+): React.ReactElement {
   const { centerX, centerY, radius, slices, title } = layout;
   const legendX = centerX + radius + 30;
   const legendItemH = 22;
 
-  const svg = (
+  return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={layout.width}
@@ -98,6 +98,12 @@ export function renderPieSvg(
       ))}
     </svg>
   );
+}
 
-  return renderToStaticMarkup(svg);
+export function renderPieSvg(
+  layout: PieLayoutResult,
+  theme: Theme,
+  idPrefix: string = 'mermaid',
+): string {
+  return renderToStaticMarkup(renderPieElement(layout, theme, idPrefix));
 }

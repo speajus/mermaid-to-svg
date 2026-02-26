@@ -52,9 +52,10 @@ export {
   neutralTheme,
 } from './themes/index.js';
 
+import React from 'react';
 import { parse as parseDiagram, cleanup as cleanupDom } from './parse/index.js';
 import { layout as layoutDiagram } from './layout/index.js';
-import { renderSvg as renderDiagramSvg } from './render/index.js';
+import { renderSvg as renderDiagramSvg, renderElement as renderDiagramElement } from './render/index.js';
 import { resolveTheme } from './themes/index.js';
 
 export { cleanupDom as cleanup };
@@ -70,6 +71,14 @@ export { layoutDiagram as layout };
 export function renderSvg(layoutResult: AnyLayoutResult, theme?: Theme, idPrefix?: string): string {
   const resolvedTheme = resolveTheme(theme ?? 'default');
   return renderDiagramSvg(layoutResult, resolvedTheme, idPrefix);
+}
+
+/**
+ * Render a layout result to a React element tree (for embedding in React apps).
+ */
+export function renderElement(layoutResult: AnyLayoutResult, theme?: Theme, idPrefix?: string): React.ReactElement {
+  const resolvedTheme = resolveTheme(theme ?? 'default');
+  return renderDiagramElement(layoutResult, resolvedTheme, idPrefix);
 }
 
 /**

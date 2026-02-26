@@ -11,8 +11,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"]
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "paths": {
+      "@mermaid-to-svg/*": ["../src/*"],
+      "@mermaid-to-svg": ["../src/index.ts"]
+    }
   },
-  "include": ["src"]
+  "include": ["src", "../src"]
 }
 

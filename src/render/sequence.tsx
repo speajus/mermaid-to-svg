@@ -259,15 +259,15 @@ function ActivationBar({
   );
 }
 
-export function renderSequenceSvg(
+export function renderSequenceElement(
   layout: SequenceLayoutResult,
   theme: Theme,
   idPrefix: string,
-): string {
+): React.ReactElement {
   const { width, height, participants, messages, notes, activations, blocks } = layout;
   const bottomY = height - 40 - 40; // PADDING - PARTICIPANT_HEIGHT
 
-  const element = (
+  return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox={`0 0 ${width} ${height}`}
@@ -311,6 +311,12 @@ export function renderSequenceSvg(
       ))}
     </svg>
   );
+}
 
-  return renderToStaticMarkup(element);
+export function renderSequenceSvg(
+  layout: SequenceLayoutResult,
+  theme: Theme,
+  idPrefix: string,
+): string {
+  return renderToStaticMarkup(renderSequenceElement(layout, theme, idPrefix));
 }

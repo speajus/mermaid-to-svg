@@ -6,11 +6,11 @@ import { SvgRoot, ArrowDefs } from './components/containers.js';
 import { NodeShape } from './components/shapes.js';
 import { EdgePath } from './components/edges.js';
 
-export function renderFlowchartSvg(layout: LayoutResult, theme: Theme, idPrefix: string): string {
+export function renderFlowchartElement(layout: LayoutResult, theme: Theme, idPrefix: string): React.ReactElement {
   const { nodes, edges, width, height } = layout;
   const padding = 20;
 
-  const element = (
+  return (
     <SvgRoot
       width={width}
       height={height}
@@ -58,6 +58,8 @@ export function renderFlowchartSvg(layout: LayoutResult, theme: Theme, idPrefix:
       })}
     </SvgRoot>
   );
+}
 
-  return renderToStaticMarkup(element);
+export function renderFlowchartSvg(layout: LayoutResult, theme: Theme, idPrefix: string): string {
+  return renderToStaticMarkup(renderFlowchartElement(layout, theme, idPrefix));
 }

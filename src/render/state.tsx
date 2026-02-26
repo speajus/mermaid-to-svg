@@ -81,11 +81,11 @@ function StateNode({ node, theme }: { node: StateNodeLayout; theme: Theme }) {
   );
 }
 
-export function renderStateSvg(layout: StateLayoutResult, theme: Theme, idPrefix: string): string {
+export function renderStateElement(layout: StateLayoutResult, theme: Theme, idPrefix: string): React.ReactElement {
   const { width, height, stateNodes, edges } = layout;
   const padding = 20;
 
-  const element = (
+  return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox={`0 0 ${width} ${height}`}
@@ -148,6 +148,8 @@ export function renderStateSvg(layout: StateLayoutResult, theme: Theme, idPrefix
       </g>
     </svg>
   );
+}
 
-  return renderToStaticMarkup(element);
+export function renderStateSvg(layout: StateLayoutResult, theme: Theme, idPrefix: string): string {
+  return renderToStaticMarkup(renderStateElement(layout, theme, idPrefix));
 }

@@ -89,14 +89,14 @@ function cardinalityMarker(card: string): string {
   }
 }
 
-export function renderERSvg(
+export function renderERElement(
   layout: ERLayoutResult,
   theme: Theme,
   idPrefix: string = 'mermaid',
-): string {
+): React.ReactElement {
   const edgeStyle = resolveEdgeStyle(theme, 'default');
 
-  const svg = (
+  return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={layout.width}
@@ -175,6 +175,12 @@ export function renderERSvg(
       ))}
     </svg>
   );
+}
 
-  return renderToStaticMarkup(svg);
+export function renderERSvg(
+  layout: ERLayoutResult,
+  theme: Theme,
+  idPrefix: string = 'mermaid',
+): string {
+  return renderToStaticMarkup(renderERElement(layout, theme, idPrefix));
 }

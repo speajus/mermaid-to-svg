@@ -140,12 +140,12 @@ function MindmapNodeComponent({
   );
 }
 
-export function renderMindmapSvg(
+export function renderMindmapElement(
   layout: MindmapLayoutResult,
   theme: Theme,
   idPrefix: string = 'mermaid',
-): string {
-  const svg = (
+): React.ReactElement {
+  return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={layout.width}
@@ -155,6 +155,12 @@ export function renderMindmapSvg(
       <MindmapNodeComponent node={layout.root} theme={theme} depth={0} />
     </svg>
   );
+}
 
-  return renderToStaticMarkup(svg);
+export function renderMindmapSvg(
+  layout: MindmapLayoutResult,
+  theme: Theme,
+  idPrefix: string = 'mermaid',
+): string {
+  return renderToStaticMarkup(renderMindmapElement(layout, theme, idPrefix));
 }

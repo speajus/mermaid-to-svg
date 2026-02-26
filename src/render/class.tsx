@@ -104,11 +104,11 @@ function ClassBox({ node, theme }: { node: ClassNodeLayout; theme: Theme }) {
   );
 }
 
-export function renderClassSvg(layout: ClassLayoutResult, theme: Theme, idPrefix: string): string {
+export function renderClassElement(layout: ClassLayoutResult, theme: Theme, idPrefix: string): React.ReactElement {
   const { width, height, classNodes, edges } = layout;
   const padding = 20;
 
-  const element = (
+  return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox={`0 0 ${width} ${height}`}
@@ -210,6 +210,8 @@ export function renderClassSvg(layout: ClassLayoutResult, theme: Theme, idPrefix
       </g>
     </svg>
   );
+}
 
-  return renderToStaticMarkup(element);
+export function renderClassSvg(layout: ClassLayoutResult, theme: Theme, idPrefix: string): string {
+  return renderToStaticMarkup(renderClassElement(layout, theme, idPrefix));
 }
