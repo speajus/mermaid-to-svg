@@ -20,8 +20,8 @@ export default defineConfig({
       // elkjs tries to require('web-worker') for Node; stub it in the browser
       'web-worker': path.resolve(__dirname, 'src/stubs/web-worker.ts'),
       // Resolve deps from root node_modules since theme-builder aliases @mermaid-to-svg to raw source
-      'elkjs': path.resolve(rootDir, 'node_modules/elkjs'),
-      'mermaid': path.resolve(rootDir, 'node_modules/mermaid'),
+      elkjs: path.resolve(rootDir, 'node_modules/elkjs'),
+      mermaid: path.resolve(rootDir, 'node_modules/mermaid'),
     },
   },
 });
