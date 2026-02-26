@@ -235,8 +235,8 @@ mindmap
 
 Four built-in themes — here's the flowchart in each:
 
-| Default                                               | Dark                                               | Forest                                               | Neutral                                               |
-| ----------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------- |
+| Default                                                         | Dark                                                         | Forest                                                         | Neutral                                                         |
+| --------------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------- | --------------------------------------------------------------- |
 | <img src="examples/output/flowchart-default.png" width="180" /> | <img src="examples/output/flowchart-dark.png" width="180" /> | <img src="examples/output/flowchart-forest.png" width="180" /> | <img src="examples/output/flowchart-neutral.png" width="180" /> |
 
 ## Development
