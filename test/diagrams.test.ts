@@ -1,9 +1,12 @@
-import { describe, it } from 'node:test';
+import { describe, it, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { parse } from '../src/parse/index.js';
+import { parse, cleanup } from '../src/parse/index.js';
 import { layout } from '../src/layout/index.js';
 import { renderSvg } from '../src/render/index.js';
 import { defaultTheme } from '../src/themes/index.js';
+
+// Clean up jsdom after all tests to allow the process to exit
+after(() => cleanup());
 
 // ── Sequence Diagrams ──────────────────────────────────────────────────────
 
@@ -48,9 +51,9 @@ describe('sequence diagram', () => {
     const ir = await parse(SEQ);
     if (ir.type !== 'sequence') return;
     assert.ok(ir.blocks.length >= 2, `Expected >= 2 blocks, got ${ir.blocks.length}`);
-    const loop = ir.blocks.find(b => b.type === 'loop');
+    const loop = ir.blocks.find((b) => b.type === 'loop');
     assert.ok(loop, 'Expected loop block');
-    const alt = ir.blocks.find(b => b.type === 'alt');
+    const alt = ir.blocks.find((b) => b.type === 'alt');
     assert.ok(alt, 'Expected alt block');
     assert.ok((alt?.sections.length ?? 0) >= 2, 'alt should have 2+ sections');
   });
@@ -79,7 +82,7 @@ describe('sequence edge cases', () => {
     `);
     assert.equal(ir.type, 'sequence');
     if (ir.type !== 'sequence') return;
-    const selfMsg = ir.messages.find(m => m.from === 'A' && m.to === 'A');
+    const selfMsg = ir.messages.find((m) => m.from === 'A' && m.to === 'A');
     assert.ok(selfMsg, 'Expected a self-message');
     assert.equal(selfMsg!.label, 'Self call');
 
@@ -117,11 +120,11 @@ describe('sequence edge cases', () => {
     `);
     assert.equal(ir.type, 'sequence');
     if (ir.type !== 'sequence') return;
-    const alt = ir.blocks.find(b => b.type === 'alt');
+    const alt = ir.blocks.find((b) => b.type === 'alt');
     assert.ok(alt, 'Expected alt block');
     assert.ok(alt!.sections.length >= 2, 'alt should have 2+ sections');
     // The nested loop should be a separate block
-    const loop = ir.blocks.find(b => b.type === 'loop');
+    const loop = ir.blocks.find((b) => b.type === 'loop');
     assert.ok(loop, 'Expected nested loop block');
   });
 
@@ -141,9 +144,9 @@ describe('sequence edge cases', () => {
     `);
     assert.equal(ir.type, 'sequence');
     if (ir.type !== 'sequence') return;
-    const opt = ir.blocks.find(b => b.type === 'opt');
+    const opt = ir.blocks.find((b) => b.type === 'opt');
     assert.ok(opt, 'Expected opt block');
-    const par = ir.blocks.find(b => b.type === 'par');
+    const par = ir.blocks.find((b) => b.type === 'par');
     assert.ok(par, 'Expected par block');
     assert.ok(par!.sections.length >= 2, 'par should have 2+ sections');
   });
@@ -188,7 +191,7 @@ describe('class diagram', () => {
     assert.equal(ir.type, 'class');
     if (ir.type !== 'class') return;
     assert.ok(ir.classes.length >= 2);
-    const animal = ir.classes.find(c => c.id === 'Animal');
+    const animal = ir.classes.find((c) => c.id === 'Animal');
     assert.ok(animal);
     assert.ok(animal!.members.length >= 2, `Expected >= 2 members, got ${animal!.members.length}`);
     assert.ok(animal!.methods.length >= 2, `Expected >= 2 methods, got ${animal!.methods.length}`);
@@ -224,16 +227,19 @@ describe('class edge cases', () => {
     `);
     assert.equal(ir.type, 'class');
     if (ir.type !== 'class') return;
-    assert.ok(ir.relationships.length >= 5, `Expected >= 5 relationships, got ${ir.relationships.length}`);
-    const inheritance = ir.relationships.find(r => r.relationType === 'inheritance');
+    assert.ok(
+      ir.relationships.length >= 5,
+      `Expected >= 5 relationships, got ${ir.relationships.length}`,
+    );
+    const inheritance = ir.relationships.find((r) => r.relationType === 'inheritance');
     assert.ok(inheritance, 'Expected inheritance relationship');
-    const composition = ir.relationships.find(r => r.relationType === 'composition');
+    const composition = ir.relationships.find((r) => r.relationType === 'composition');
     assert.ok(composition, 'Expected composition relationship');
-    const aggregation = ir.relationships.find(r => r.relationType === 'aggregation');
+    const aggregation = ir.relationships.find((r) => r.relationType === 'aggregation');
     assert.ok(aggregation, 'Expected aggregation relationship');
-    const dependency = ir.relationships.find(r => r.relationType === 'dependency');
+    const dependency = ir.relationships.find((r) => r.relationType === 'dependency');
     assert.ok(dependency, 'Expected dependency relationship');
-    const realization = ir.relationships.find(r => r.relationType === 'realization');
+    const realization = ir.relationships.find((r) => r.relationType === 'realization');
     assert.ok(realization, 'Expected realization relationship');
   });
 
@@ -263,7 +269,7 @@ describe('class edge cases', () => {
     `);
     assert.equal(ir.type, 'class');
     if (ir.type !== 'class') return;
-    const shape = ir.classes.find(c => c.id === 'Shape');
+    const shape = ir.classes.find((c) => c.id === 'Shape');
     assert.ok(shape, 'Expected Shape class');
     assert.ok(shape!.annotations.length >= 1, 'Expected interface annotation');
 
@@ -283,7 +289,7 @@ describe('class edge cases', () => {
     `);
     assert.equal(ir.type, 'class');
     if (ir.type !== 'class') return;
-    const empty = ir.classes.find(c => c.id === 'Empty');
+    const empty = ir.classes.find((c) => c.id === 'Empty');
     assert.ok(empty, 'Expected Empty class');
     assert.equal(empty!.members.length, 0);
     assert.equal(empty!.methods.length, 0);
@@ -311,10 +317,13 @@ describe('state diagram', () => {
     assert.equal(ir.type, 'state');
     if (ir.type !== 'state') return;
     assert.ok(ir.states.length >= 4, `Expected >= 4 states, got ${ir.states.length}`);
-    const idle = ir.states.find(s => s.id === 'Idle');
+    const idle = ir.states.find((s) => s.id === 'Idle');
     assert.ok(idle, 'Expected Idle state');
-    assert.ok(ir.transitions.length >= 5, `Expected >= 5 transitions, got ${ir.transitions.length}`);
-    const submit = ir.transitions.find(t => t.label === 'submit');
+    assert.ok(
+      ir.transitions.length >= 5,
+      `Expected >= 5 transitions, got ${ir.transitions.length}`,
+    );
+    const submit = ir.transitions.find((t) => t.label === 'submit');
     assert.ok(submit, 'Expected transition with label "submit"');
   });
 
@@ -328,7 +337,6 @@ describe('state diagram', () => {
     assert.ok(svg.includes('Processing'));
   });
 });
-
 
 // ── State Edge Cases ──────────────────────────────────────────────────────
 
@@ -345,15 +353,15 @@ describe('state edge cases', () => {
     `);
     assert.equal(ir.type, 'state');
     if (ir.type !== 'state') return;
-    const active = ir.states.find(s => s.id === 'Active');
+    const active = ir.states.find((s) => s.id === 'Active');
     assert.ok(active, 'Expected Active state');
-    const idle = ir.states.find(s => s.id === 'Idle');
+    const idle = ir.states.find((s) => s.id === 'Idle');
     assert.ok(idle, 'Expected nested Idle state');
-    const running = ir.states.find(s => s.id === 'Running');
+    const running = ir.states.find((s) => s.id === 'Running');
     assert.ok(running, 'Expected nested Running state');
-    const startTrans = ir.transitions.find(t => t.label === 'start');
+    const startTrans = ir.transitions.find((t) => t.label === 'start');
     assert.ok(startTrans, 'Expected transition with label "start"');
-    const stopTrans = ir.transitions.find(t => t.label === 'stop');
+    const stopTrans = ir.transitions.find((t) => t.label === 'stop');
     assert.ok(stopTrans, 'Expected transition with label "stop"');
   });
 
@@ -385,9 +393,9 @@ describe('state edge cases', () => {
     `);
     assert.equal(ir.type, 'state');
     if (ir.type !== 'state') return;
-    const first = ir.states.find(s => s.id === 'First');
+    const first = ir.states.find((s) => s.id === 'First');
     assert.ok(first, 'Expected First state');
-    const choice = ir.states.find(s => s.id === 'check');
+    const choice = ir.states.find((s) => s.id === 'check');
     assert.ok(choice, 'Expected choice state');
   });
 
@@ -400,11 +408,14 @@ describe('state edge cases', () => {
     `);
     assert.equal(ir.type, 'state');
     if (ir.type !== 'state') return;
-    const starts = ir.states.filter(s => s.type === 'start');
+    const starts = ir.states.filter((s) => s.type === 'start');
     assert.ok(starts.length >= 1, 'Expected at least one start state');
-    const ends = ir.states.filter(s => s.type === 'end');
+    const ends = ir.states.filter((s) => s.type === 'end');
     assert.ok(ends.length >= 1, 'Expected at least one end state');
-    assert.ok(ir.transitions.length >= 4, `Expected >= 4 transitions, got ${ir.transitions.length}`);
+    assert.ok(
+      ir.transitions.length >= 4,
+      `Expected >= 4 transitions, got ${ir.transitions.length}`,
+    );
 
     const positioned = await layout(ir);
     const svg = renderSvg(positioned, defaultTheme);
@@ -439,10 +450,10 @@ describe('ER diagram', () => {
   it('parses entity attributes', async () => {
     const ir = await parse(ER);
     if (ir.type !== 'er') return;
-    const customer = ir.entities.find(e => e.label === 'CUSTOMER');
+    const customer = ir.entities.find((e) => e.label === 'CUSTOMER');
     assert.ok(customer, 'Expected CUSTOMER entity');
     assert.ok(customer!.attributes.length >= 2, `Expected >= 2 attributes`);
-    const pk = customer!.attributes.find(a => a.keys.includes('PK'));
+    const pk = customer!.attributes.find((a) => a.keys.includes('PK'));
     assert.ok(pk, 'Expected PK attribute');
   });
 
@@ -478,7 +489,7 @@ describe('gantt chart', () => {
     assert.equal(ir.title, 'Project Plan');
     assert.ok(ir.sections.length >= 2, `Expected >= 2 sections, got ${ir.sections.length}`);
     assert.ok(ir.tasks.length >= 3, `Expected >= 3 tasks, got ${ir.tasks.length}`);
-    const wireframes = ir.tasks.find(t => t.label.includes('Wireframes'));
+    const wireframes = ir.tasks.find((t) => t.label.includes('Wireframes'));
     assert.ok(wireframes, 'Expected Wireframes task');
   });
 
@@ -508,7 +519,7 @@ describe('pie chart', () => {
     if (ir.type !== 'pie') return;
     assert.equal(ir.title, 'Pets adopted');
     assert.equal(ir.sections.length, 3);
-    const dogs = ir.sections.find(s => s.label === 'Dogs');
+    const dogs = ir.sections.find((s) => s.label === 'Dogs');
     assert.ok(dogs, 'Expected Dogs section');
     assert.equal(dogs!.value, 386);
   });
@@ -542,8 +553,11 @@ describe('mindmap', () => {
     if (ir.type !== 'mindmap') return;
     assert.equal(ir.root.label, 'Central');
     assert.ok(ir.root.isRoot);
-    assert.ok(ir.root.children.length >= 2, `Expected >= 2 children, got ${ir.root.children.length}`);
-    const origins = ir.root.children.find(c => c.label === 'Origins');
+    assert.ok(
+      ir.root.children.length >= 2,
+      `Expected >= 2 children, got ${ir.root.children.length}`,
+    );
+    const origins = ir.root.children.find((c) => c.label === 'Origins');
     assert.ok(origins, 'Expected Origins child');
     assert.ok(origins!.children.length >= 2);
   });

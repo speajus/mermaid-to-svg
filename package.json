@@ -43,20 +43,23 @@
   },
   "scripts": {
     "build": "tsup",
-    "test": "node --import tsx --test test/**/*.test.ts",
-    "typecheck": "tsc --noEmit"
+    "test": "node --import tsx --test --test-force-exit --test-concurrency=1 --test-timeout=120000 test/**/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "packageManager": "pnpm@9.14.4",
   "license": "MIT",
   "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "elkjs": "^0.9.0",
     "jsdom": "^28.1.0",
     "mermaid": "^11.0.0",
+    "prettier": "^3.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@resvg/resvg-js": "^2.6.0",
     "@types/jsdom": "^28.0.0",
     "@types/node": "^25.3.1",
     "@types/react": "^19.0.0",

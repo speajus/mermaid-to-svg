@@ -1,7 +1,11 @@
 import ELK from 'elkjs';
 import type {
-  FlowchartIR, LayoutResult, LayoutOptions,
-  PositionedNode, PositionedEdge, PositionedSubgraph,
+  FlowchartIR,
+  LayoutResult,
+  LayoutOptions,
+  PositionedNode,
+  PositionedEdge,
+  PositionedSubgraph,
   FontMetricsProvider,
 } from '../types.js';
 import { estimationFontMetrics } from './text-measure.js';
@@ -11,10 +15,14 @@ const elk = new ELK();
 /** Map our direction to ELK direction */
 function resolveElkDirection(direction: string): string {
   switch (direction) {
-    case 'LR': return 'RIGHT';
-    case 'RL': return 'LEFT';
-    case 'BT': return 'UP';
-    default: return 'DOWN'; // TB
+    case 'LR':
+      return 'RIGHT';
+    case 'RL':
+      return 'LEFT';
+    case 'BT':
+      return 'UP';
+    default:
+      return 'DOWN'; // TB
   }
 }
 
@@ -63,7 +71,9 @@ export async function layoutFlowchart(
     id: edge.id,
     sources: [edge.source],
     targets: [edge.target],
-    labels: edge.label ? [{ text: edge.label, width: edge.label.length * fontSize * 0.6, height: fontSize * 1.2 }] : [],
+    labels: edge.label
+      ? [{ text: edge.label, width: edge.label.length * fontSize * 0.6, height: fontSize * 1.2 }]
+      : [],
   }));
 
   const elkGraph = {
@@ -125,7 +135,8 @@ export async function layoutFlowchart(
   });
 
   // Compute total bounds
-  let maxX = 0, maxY = 0;
+  let maxX = 0,
+    maxY = 0;
   for (const n of positionedNodes) {
     maxX = Math.max(maxX, n.x + n.width);
     maxY = Math.max(maxY, n.y + n.height);
@@ -140,4 +151,3 @@ export async function layoutFlowchart(
     height: maxY + padding * 2,
   };
 }
-

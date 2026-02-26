@@ -5,7 +5,12 @@ import type { FontMetricsProvider, TextMetrics } from '../types.js';
  * Uses average character width ratios for common font families.
  */
 export const estimationFontMetrics: FontMetricsProvider = {
-  measureText(text: string, fontSize: number, _fontFamily: string, _fontWeight?: string | number): TextMetrics {
+  measureText(
+    text: string,
+    fontSize: number,
+    _fontFamily: string,
+    _fontWeight?: string | number,
+  ): TextMetrics {
     // Average character width is ~0.6 of font size for sans-serif fonts
     const avgCharWidth = fontSize * 0.6;
     const width = text.length * avgCharWidth;
@@ -15,4 +20,3 @@ export const estimationFontMetrics: FontMetricsProvider = {
     return { width, height, ascent, descent };
   },
 };
-

@@ -61,4 +61,3 @@ export function renderFlowchartSvg(layout: LayoutResult, theme: Theme, idPrefix:
 
   return renderToStaticMarkup(element);
 }
-

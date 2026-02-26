@@ -35,4 +35,3 @@ export async function parseMindmap(text: string): Promise<MindmapIR> {
 
   return { type: 'mindmap', root: convertNode(rawRoot) };
 }
-

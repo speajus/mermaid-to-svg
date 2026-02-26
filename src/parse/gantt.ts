@@ -15,14 +15,21 @@ export async function parseGantt(text: string): Promise<GanttIR> {
     id: t.id ?? `task-${i}`,
     label: (t.task ?? '').trim(),
     section: t.section ?? '',
-    startTime: t.startTime instanceof Date ? t.startTime.toISOString()
-      : typeof t.startTime === 'string' ? t.startTime : '',
-    endTime: t.endTime instanceof Date ? t.endTime.toISOString()
-      : typeof t.endTime === 'string' ? t.endTime : '',
+    startTime:
+      t.startTime instanceof Date
+        ? t.startTime.toISOString()
+        : typeof t.startTime === 'string'
+          ? t.startTime
+          : '',
+    endTime:
+      t.endTime instanceof Date
+        ? t.endTime.toISOString()
+        : typeof t.endTime === 'string'
+          ? t.endTime
+          : '',
     classes: t.classes ?? [],
     order: t.order ?? i,
   }));
 
   return { type: 'gantt', title, dateFormat, sections, tasks };
 }
-

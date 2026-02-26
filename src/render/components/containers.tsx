@@ -20,9 +20,7 @@ export function SvgRoot({ width, height, padding, background, idPrefix, children
       role="img"
     >
       <rect width={width} height={height} fill={background} />
-      <g transform={`translate(${padding}, ${padding})`}>
-        {children}
-      </g>
+      <g transform={`translate(${padding}, ${padding})`}>{children}</g>
     </svg>
   );
 }
@@ -128,8 +126,10 @@ export function ArrowDefs({ idPrefix, theme }: ArrowDefsProps) {
           <linearGradient
             key={key}
             id={gradientId(idPrefix, key)}
-            x1={`${x1}%`} y1={`${y1}%`}
-            x2={`${x2}%`} y2={`${y2}%`}
+            x1={`${x1}%`}
+            y1={`${y1}%`}
+            x2={`${x2}%`}
+            y2={`${y2}%`}
           >
             <stop offset="0%" stopColor={config.from} />
             <stop offset="100%" stopColor={config.to} />
@@ -139,11 +139,23 @@ export function ArrowDefs({ idPrefix, theme }: ArrowDefsProps) {
 
       {/* Shadow filter definitions */}
       {shadows.map(({ key, config }) => (
-        <filter key={key} id={shadowFilterId(idPrefix, key)} x="-20%" y="-20%" width="150%" height="150%">
-          <feDropShadow dx={config.dx} dy={config.dy} stdDeviation={config.blur} floodColor={config.color} floodOpacity="1" />
+        <filter
+          key={key}
+          id={shadowFilterId(idPrefix, key)}
+          x="-20%"
+          y="-20%"
+          width="150%"
+          height="150%"
+        >
+          <feDropShadow
+            dx={config.dx}
+            dy={config.dy}
+            stdDeviation={config.blur}
+            floodColor={config.color}
+            floodOpacity="1"
+          />
         </filter>
       ))}
     </defs>
   );
 }
-

@@ -18,4 +18,3 @@ export async function parsePie(text: string): Promise<PieIR> {
 
   return { type: 'pie', title, showData, sections };
 }
-

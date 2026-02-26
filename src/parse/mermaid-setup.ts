@@ -6,6 +6,7 @@
 
 let mermaidInstance: typeof import('mermaid').default | null = null;
 let setupDone = false;
+let jsdomWindow: { close(): void } | null = null;
 
 async function ensureDomGlobals() {
   if (setupDone) return;
@@ -13,6 +14,7 @@ async function ensureDomGlobals() {
   if (!('window' in globalThis) || !('document' in globalThis)) {
     const { JSDOM } = await import('jsdom');
     const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
+    jsdomWindow = dom.window;
     (globalThis as Record<string, unknown>).window = dom.window;
     (globalThis as Record<string, unknown>).document = dom.window.document;
     (globalThis as Record<string, unknown>).self = globalThis;
@@ -29,3 +31,18 @@ export async function fetchMermaid() {
   return mermaidInstance;
 }
 
+/**
+ * Close the jsdom window and clean up global DOM polyfills.
+ * Call this after all rendering is complete to allow the Node.js process to exit.
+ */
+export function cleanup() {
+  if (jsdomWindow) {
+    jsdomWindow.close();
+    jsdomWindow = null;
+  }
+  mermaidInstance = null;
+  setupDone = false;
+  delete (globalThis as Record<string, unknown>).window;
+  delete (globalThis as Record<string, unknown>).document;
+  delete (globalThis as Record<string, unknown>).self;
+}

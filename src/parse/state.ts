@@ -22,10 +22,12 @@ export async function parseState(text: string): Promise<StateIR> {
   const rawNodes: any[] = db.nodes ?? [];
   const rawEdges: any[] = db.edges ?? [];
 
-  const states: StateDef[] = rawNodes.map(node => ({
+  const states: StateDef[] = rawNodes.map((node) => ({
     id: node.id,
-    label: resolveStateType(node.shape) === 'start' || resolveStateType(node.shape) === 'end'
-      ? '' : (node.label ?? node.id),
+    label:
+      resolveStateType(node.shape) === 'start' || resolveStateType(node.shape) === 'end'
+        ? ''
+        : (node.label ?? node.id),
     type: resolveStateType(node.shape),
     description: node.label,
   }));
@@ -39,4 +41,3 @@ export async function parseState(text: string): Promise<StateIR> {
 
   return { type: 'state', states, transitions };
 }
-

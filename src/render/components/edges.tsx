@@ -23,12 +23,18 @@ function buildPathData(points: Array<{ x: number; y: number }>): string {
 /** Resolve marker URL for the arrow head type */
 function resolveMarkerEnd(arrowHead: string, idPrefix: string): string | undefined {
   switch (arrowHead) {
-    case 'arrow': return `url(#${idPrefix}-arrow)`;
-    case 'open': return `url(#${idPrefix}-arrow-open)`;
-    case 'cross': return `url(#${idPrefix}-arrow-cross)`;
-    case 'circle': return `url(#${idPrefix}-arrow-circle)`;
-    case 'none': return undefined;
-    default: return `url(#${idPrefix}-arrow)`;
+    case 'arrow':
+      return `url(#${idPrefix}-arrow)`;
+    case 'open':
+      return `url(#${idPrefix}-arrow-open)`;
+    case 'cross':
+      return `url(#${idPrefix}-arrow-cross)`;
+    case 'circle':
+      return `url(#${idPrefix}-arrow-circle)`;
+    case 'none':
+      return undefined;
+    default:
+      return `url(#${idPrefix}-arrow)`;
   }
 }
 
@@ -40,12 +46,13 @@ export function EdgePath({ edge, style, idPrefix, fontSize, fontFamily }: EdgePa
   let labelElement = null;
   if (edge.label && edge.points.length >= 2) {
     const midIdx = Math.floor(edge.points.length / 2);
-    const midPoint = edge.points.length % 2 === 0
-      ? {
-          x: (edge.points[midIdx - 1].x + edge.points[midIdx].x) / 2,
-          y: (edge.points[midIdx - 1].y + edge.points[midIdx].y) / 2,
-        }
-      : edge.points[midIdx];
+    const midPoint =
+      edge.points.length % 2 === 0
+        ? {
+            x: (edge.points[midIdx - 1].x + edge.points[midIdx].x) / 2,
+            y: (edge.points[midIdx - 1].y + edge.points[midIdx].y) / 2,
+          }
+        : edge.points[midIdx];
 
     labelElement = (
       <EdgeLabel
@@ -74,4 +81,3 @@ export function EdgePath({ edge, style, idPrefix, fontSize, fontFamily }: EdgePa
     </g>
   );
 }
-
