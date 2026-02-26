@@ -11,6 +11,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@mermaid-to-svg': path.resolve(__dirname, '../src'),
+      // elkjs tries to require('web-worker') for Node; stub it in the browser
+      'web-worker': path.resolve(__dirname, 'src/stubs/web-worker.ts'),
     },
   },
 });
