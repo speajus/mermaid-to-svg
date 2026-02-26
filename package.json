@@ -55,11 +55,11 @@
     "elkjs": "^0.9.0",
     "jsdom": "^28.1.0",
     "mermaid": "^11.0.0",
-    "prettier": "^3.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "prettier": "^3.8.1",
     "@types/jsdom": "^28.0.0",
     "@types/node": "^25.3.1",
     "@types/react": "^19.0.0",
