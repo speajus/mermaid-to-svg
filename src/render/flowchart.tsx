@@ -5,7 +5,11 @@ import { ArrowDefs } from './components/containers.js';
 import { NodeShape } from './components/shapes.js';
 import { EdgePath } from './components/edges.js';
 
-export function renderFlowchartElement(layout: LayoutResult, theme: Theme, idPrefix: string): React.ReactElement {
+export function renderFlowchartElement(
+  layout: LayoutResult,
+  theme: Theme,
+  idPrefix: string,
+): React.ReactElement {
   const { nodes, edges } = layout;
 
   return (
@@ -51,4 +55,3 @@ export function renderFlowchartElement(layout: LayoutResult, theme: Theme, idPre
     </>
   );
 }
-

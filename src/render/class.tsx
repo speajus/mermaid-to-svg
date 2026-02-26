@@ -103,7 +103,11 @@ function ClassBox({ node, theme }: { node: ClassNodeLayout; theme: Theme }) {
   );
 }
 
-export function renderClassElement(layout: ClassLayoutResult, theme: Theme, idPrefix: string): React.ReactElement {
+export function renderClassElement(
+  layout: ClassLayoutResult,
+  theme: Theme,
+  idPrefix: string,
+): React.ReactElement {
   const { width, height, classNodes, edges } = layout;
   const padding = 20;
 

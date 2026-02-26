@@ -49,10 +49,7 @@ export function MermaidPreview({ code, theme }: { code: string; theme: Theme }) 
   return (
     <div>
       {error && <div className="mermaid-error">{error}</div>}
-      <div className="mermaid-output">
-        {element}
-      </div>
+      <div className="mermaid-output">{element}</div>
     </div>
   );
 }
-

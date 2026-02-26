@@ -80,7 +80,11 @@ function StateNode({ node, theme }: { node: StateNodeLayout; theme: Theme }) {
   );
 }
 
-export function renderStateElement(layout: StateLayoutResult, theme: Theme, idPrefix: string): React.ReactElement {
+export function renderStateElement(
+  layout: StateLayoutResult,
+  theme: Theme,
+  idPrefix: string,
+): React.ReactElement {
   const { stateNodes, edges } = layout;
   const padding = 20;
 
@@ -141,4 +145,3 @@ export function renderStateElement(layout: StateLayoutResult, theme: Theme, idPr
     </>
   );
 }
-

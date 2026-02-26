@@ -23,17 +23,16 @@ const themes = ['default', 'dark', 'forest', 'neutral'] as const;
 async function main() {
   // Generate theme variants (flowchart only, for backward compat)
   for (const theme of themes) {
-  
-  // Generate one sample per diagram type (default theme)
-  for (const [name, diagram] of Object.entries(DIAGRAMS)) {
-    const { svg, bounds } = await renderMermaid(diagram, { theme });
-    writeFileSync(join(OUTPUT_DIR, `${name}-${theme}.svg`), svg);
-    const resvg = new Resvg(svg, {
-      fitTo: { mode: 'width' as const, value: Math.max(bounds.width * 2, 800) },
-    });
-    writeFileSync(join(OUTPUT_DIR, `${name}-${theme}.png`), resvg.render().asPng());
-    console.log(`✓ sample/${name} → ${bounds.width}x${bounds.height}`);
-  }
+    // Generate one sample per diagram type (default theme)
+    for (const [name, diagram] of Object.entries(DIAGRAMS)) {
+      const { svg, bounds } = await renderMermaid(diagram, { theme });
+      writeFileSync(join(OUTPUT_DIR, `${name}-${theme}.svg`), svg);
+      const resvg = new Resvg(svg, {
+        fitTo: { mode: 'width' as const, value: Math.max(bounds.width * 2, 800) },
+      });
+      writeFileSync(join(OUTPUT_DIR, `${name}-${theme}.png`), resvg.render().asPng());
+      console.log(`✓ sample/${name} → ${bounds.width}x${bounds.height}`);
+    }
   }
   console.log(`\nAll outputs saved to ${OUTPUT_DIR}`);
 }
