@@ -126,7 +126,7 @@ flowchart TD
   C -->|Three| F[fa:fa-car Car]
 ```
 
-<img src="examples/output/flowchart.png" width="400" alt="Flowchart diagram" />
+<img src="examples/output/flowchart-default.png" width="400" alt="Flowchart diagram" />
 
 ### Sequence
 
@@ -139,7 +139,7 @@ sequenceDiagram
   Alice->>Bob: See you later!
 ```
 
-<img src="examples/output/sequence.png" width="400" alt="Sequence diagram" />
+<img src="examples/output/sequence-default.png" width="400" alt="Sequence diagram" />
 
 ### Class
 
@@ -157,7 +157,7 @@ classDiagram
   Animal <|-- Duck
 ```
 
-<img src="examples/output/class.png" width="400" alt="Class diagram" />
+<img src="examples/output/class-default.png" width="400" alt="Class diagram" />
 
 ### State
 
@@ -171,7 +171,7 @@ stateDiagram-v2
   Done --> [*]
 ```
 
-<img src="examples/output/state.png" width="250" alt="State diagram" />
+<img src="examples/output/state-default.png" width="250" alt="State diagram" />
 
 ### ER (Entity Relationship)
 
@@ -188,7 +188,7 @@ erDiagram
   CUSTOMER ||--o{ ORDER : places
 ```
 
-<img src="examples/output/er.png" width="400" alt="ER diagram" />
+<img src="examples/output/er-default.png" width="400" alt="ER diagram" />
 
 ### Gantt
 
@@ -203,7 +203,7 @@ gantt
     Backend    :2024-01-10, 20d
 ```
 
-<img src="examples/output/gantt.png" width="500" alt="Gantt chart" />
+<img src="examples/output/gantt-default.png" width="500" alt="Gantt chart" />
 
 ### Pie
 
@@ -214,7 +214,7 @@ pie title Pets adopted
   "Rats" : 15
 ```
 
-<img src="examples/output/pie.png" width="400" alt="Pie chart" />
+<img src="examples/output/pie-default.png" width="400" alt="Pie chart" />
 
 ### Mindmap
 
@@ -229,7 +229,7 @@ mindmap
       On adoption
 ```
 
-<img src="examples/output/mindmap.png" width="400" alt="Mindmap" />
+<img src="examples/output/mindmap-default.png" width="400" alt="Mindmap" />
 
 ### Themes
 
@@ -237,7 +237,7 @@ Four built-in themes — here's the flowchart in each:
 
 | Default                                               | Dark                                               | Forest                                               | Neutral                                               |
 | ----------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------- |
-| <img src="examples/output/default.png" width="180" /> | <img src="examples/output/dark.png" width="180" /> | <img src="examples/output/forest.png" width="180" /> | <img src="examples/output/neutral.png" width="180" /> |
+| <img src="examples/output/flowchart-default.png" width="180" /> | <img src="examples/output/flowchart-dark.png" width="180" /> | <img src="examples/output/flowchart-forest.png" width="180" /> | <img src="examples/output/flowchart-neutral.png" width="180" /> |
 
 ## Development
 
