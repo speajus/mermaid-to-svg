@@ -43,7 +43,7 @@ export function ArrowDefs({ idPrefix, theme }: ArrowDefsProps) {
         refY="5"
         markerWidth="8"
         markerHeight="8"
-        orient="auto-start-reverse"
+        orient="auto"
       >
         <path d="M 0 0 L 10 5 L 0 10 Z" fill={color} />
       </marker>
@@ -54,7 +54,7 @@ export function ArrowDefs({ idPrefix, theme }: ArrowDefsProps) {
         refY="5"
         markerWidth="8"
         markerHeight="8"
-        orient="auto-start-reverse"
+        orient="auto"
       >
         <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke={color} strokeWidth="1.5" />
       </marker>
@@ -65,7 +65,7 @@ export function ArrowDefs({ idPrefix, theme }: ArrowDefsProps) {
         refY="5"
         markerWidth="8"
         markerHeight="8"
-        orient="auto-start-reverse"
+        orient="auto"
       >
         <path d="M 2 2 L 8 8 M 8 2 L 2 8" fill="none" stroke={color} strokeWidth="1.5" />
       </marker>
@@ -76,7 +76,7 @@ export function ArrowDefs({ idPrefix, theme }: ArrowDefsProps) {
         refY="5"
         markerWidth="8"
         markerHeight="8"
-        orient="auto-start-reverse"
+        orient="auto"
       >
         <circle cx="5" cy="5" r="4" fill={color} />
       </marker>
