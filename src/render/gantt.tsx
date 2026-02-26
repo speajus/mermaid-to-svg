@@ -1,27 +1,21 @@
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import type { Theme } from '../types.js';
 import type { GanttLayoutResult } from '../layout/gantt-layout.js';
 
 const SECTION_COLORS = ['#4e79a7', '#f28e2c', '#e15759', '#76b7b2', '#59a14f', '#edc949'];
 
-export function renderGanttSvg(
+export function renderGanttElement(
   layout: GanttLayoutResult,
   theme: Theme,
   idPrefix: string = 'mermaid',
-): string {
+): React.ReactElement {
   const sectionColorMap = new Map<string, string>();
   layout.sections.forEach((s, i) =>
     sectionColorMap.set(s, SECTION_COLORS[i % SECTION_COLORS.length]),
   );
 
-  const svg = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={layout.width}
-      height={layout.height}
-      style={{ background: theme.background }}
-    >
+  return (
+    <>
       {/* Title */}
       {layout.title && (
         <text
@@ -84,8 +78,6 @@ export function renderGanttSvg(
           );
         });
       })()}
-    </svg>
+    </>
   );
-
-  return renderToStaticMarkup(svg);
 }

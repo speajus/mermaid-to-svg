@@ -1,23 +1,19 @@
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import type { LayoutResult, Theme } from '../types.js';
-import { resolveNodeStyle, resolveNodeStyleKey, resolveEdgeStyle } from '../themes/index.js';
-import { SvgRoot, ArrowDefs } from './components/containers.js';
+import { resolveNodeStyleKey, resolveEdgeStyle } from '../themes/index.js';
+import { ArrowDefs } from './components/containers.js';
 import { NodeShape } from './components/shapes.js';
 import { EdgePath } from './components/edges.js';
 
-export function renderFlowchartSvg(layout: LayoutResult, theme: Theme, idPrefix: string): string {
-  const { nodes, edges, width, height } = layout;
-  const padding = 20;
+export function renderFlowchartElement(
+  layout: LayoutResult,
+  theme: Theme,
+  idPrefix: string,
+): React.ReactElement {
+  const { nodes, edges } = layout;
 
-  const element = (
-    <SvgRoot
-      width={width}
-      height={height}
-      padding={padding}
-      background={theme.background}
-      idPrefix={idPrefix}
-    >
+  return (
+    <>
       <ArrowDefs idPrefix={idPrefix} theme={theme} />
 
       {/* Render edges first (behind nodes) */}
@@ -56,8 +52,6 @@ export function renderFlowchartSvg(layout: LayoutResult, theme: Theme, idPrefix:
           />
         );
       })}
-    </SvgRoot>
+    </>
   );
-
-  return renderToStaticMarkup(element);
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import type { Theme } from '../types.js';
 import type { StateLayoutResult, StateNodeLayout } from '../layout/state-layout.js';
 import { resolveEdgeStyle } from '../themes/index.js';
@@ -81,19 +80,16 @@ function StateNode({ node, theme }: { node: StateNodeLayout; theme: Theme }) {
   );
 }
 
-export function renderStateSvg(layout: StateLayoutResult, theme: Theme, idPrefix: string): string {
-  const { width, height, stateNodes, edges } = layout;
+export function renderStateElement(
+  layout: StateLayoutResult,
+  theme: Theme,
+  idPrefix: string,
+): React.ReactElement {
+  const { stateNodes, edges } = layout;
   const padding = 20;
 
-  const element = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox={`0 0 ${width} ${height}`}
-      width={width}
-      height={height}
-      role="img"
-    >
-      <rect width={width} height={height} fill={theme.background} />
+  return (
+    <>
       <defs>
         <marker
           id={`${idPrefix}-arrow`}
@@ -146,8 +142,6 @@ export function renderStateSvg(layout: StateLayoutResult, theme: Theme, idPrefix
           <StateNode key={node.id} node={node} theme={theme} />
         ))}
       </g>
-    </svg>
+    </>
   );
-
-  return renderToStaticMarkup(element);
 }

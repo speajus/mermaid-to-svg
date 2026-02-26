@@ -1,5 +1,4 @@
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import type { Theme } from '../types.js';
 import type { ClassLayoutResult, ClassNodeLayout } from '../layout/class-layout.js';
 import { resolveEdgeStyle } from '../themes/index.js';
@@ -104,19 +103,16 @@ function ClassBox({ node, theme }: { node: ClassNodeLayout; theme: Theme }) {
   );
 }
 
-export function renderClassSvg(layout: ClassLayoutResult, theme: Theme, idPrefix: string): string {
+export function renderClassElement(
+  layout: ClassLayoutResult,
+  theme: Theme,
+  idPrefix: string,
+): React.ReactElement {
   const { width, height, classNodes, edges } = layout;
   const padding = 20;
 
-  const element = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox={`0 0 ${width} ${height}`}
-      width={width}
-      height={height}
-      role="img"
-    >
-      <rect width={width} height={height} fill={theme.background} />
+  return (
+    <>
       <defs>
         <marker
           id={`${idPrefix}-arrow`}
@@ -208,8 +204,6 @@ export function renderClassSvg(layout: ClassLayoutResult, theme: Theme, idPrefix
           <ClassBox key={node.id} node={node} theme={theme} />
         ))}
       </g>
-    </svg>
+    </>
   );
-
-  return renderToStaticMarkup(element);
 }

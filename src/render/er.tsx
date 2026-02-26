@@ -1,5 +1,4 @@
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import type { Theme } from '../types.js';
 import type { ERLayoutResult, EREntityLayout } from '../layout/er-layout.js';
 import { resolveEdgeStyle } from '../themes/index.js';
@@ -89,20 +88,15 @@ function cardinalityMarker(card: string): string {
   }
 }
 
-export function renderERSvg(
+export function renderERElement(
   layout: ERLayoutResult,
   theme: Theme,
   idPrefix: string = 'mermaid',
-): string {
+): React.ReactElement {
   const edgeStyle = resolveEdgeStyle(theme, 'default');
 
-  const svg = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={layout.width}
-      height={layout.height}
-      style={{ background: theme.background }}
-    >
+  return (
+    <>
       <defs>
         <marker
           id={`${idPrefix}-er-arrow`}
@@ -173,8 +167,6 @@ export function renderERSvg(
       {layout.entities.map((e) => (
         <EREntity key={e.id} entity={e} theme={theme} />
       ))}
-    </svg>
+    </>
   );
-
-  return renderToStaticMarkup(svg);
 }

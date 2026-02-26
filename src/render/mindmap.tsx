@@ -1,5 +1,4 @@
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import type { Theme } from '../types.js';
 import type { MindmapLayoutResult, MindmapNodeLayout } from '../layout/mindmap-layout.js';
 
@@ -140,21 +139,10 @@ function MindmapNodeComponent({
   );
 }
 
-export function renderMindmapSvg(
+export function renderMindmapElement(
   layout: MindmapLayoutResult,
   theme: Theme,
   idPrefix: string = 'mermaid',
-): string {
-  const svg = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={layout.width}
-      height={layout.height}
-      style={{ background: theme.background }}
-    >
-      <MindmapNodeComponent node={layout.root} theme={theme} depth={0} />
-    </svg>
-  );
-
-  return renderToStaticMarkup(svg);
+): React.ReactElement {
+  return <MindmapNodeComponent node={layout.root} theme={theme} depth={0} />;
 }

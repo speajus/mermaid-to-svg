@@ -1,5 +1,4 @@
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import type { Theme } from '../types.js';
 import type { PieLayoutResult } from '../layout/pie-layout.js';
 
@@ -16,22 +15,17 @@ function describeArc(
   return `M ${cx},${cy} L ${start.x},${start.y} A ${r},${r} 0 ${largeArc} 1 ${end.x},${end.y} Z`;
 }
 
-export function renderPieSvg(
+export function renderPieElement(
   layout: PieLayoutResult,
   theme: Theme,
   idPrefix: string = 'mermaid',
-): string {
+): React.ReactElement {
   const { centerX, centerY, radius, slices, title } = layout;
   const legendX = centerX + radius + 30;
   const legendItemH = 22;
 
-  const svg = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={layout.width}
-      height={layout.height}
-      style={{ background: theme.background }}
-    >
+  return (
+    <>
       {/* Title */}
       {title && (
         <text
@@ -96,8 +90,6 @@ export function renderPieSvg(
           </text>
         </g>
       ))}
-    </svg>
+    </>
   );
-
-  return renderToStaticMarkup(svg);
 }

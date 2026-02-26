@@ -4,13 +4,20 @@ import type { Theme, GradientConfig, ShadowConfig } from '../../types.js';
 interface SvgRootProps {
   width: number;
   height: number;
-  padding: number;
+  padding?: number;
   background: string;
   idPrefix: string;
   children: React.ReactNode;
 }
 
-export function SvgRoot({ width, height, padding, background, idPrefix, children }: SvgRootProps) {
+export function SvgRoot({
+  width,
+  height,
+  padding = 0,
+  background,
+  idPrefix,
+  children,
+}: SvgRootProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +27,7 @@ export function SvgRoot({ width, height, padding, background, idPrefix, children
       role="img"
     >
       <rect width={width} height={height} fill={background} />
-      <g transform={`translate(${padding}, ${padding})`}>{children}</g>
+      {padding > 0 ? <g transform={`translate(${padding}, ${padding})`}>{children}</g> : children}
     </svg>
   );
 }
