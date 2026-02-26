@@ -28,7 +28,7 @@ export default defineConfig({
       // Resolve to raw source so no pre-build step is needed
       '@speajus/mermaid-to-svg/browser': path.resolve(__dirname, '..', 'src/index.ts'),
       // elkjs tries to require('web-worker') for Node; stub it in the browser
-      //    'web-worker': path.resolve(__dirname, 'src/stubs/web-worker.ts'),
+      'web-worker': path.resolve(__dirname, 'src/stubs/web-worker.ts'),
     },
   },
 });
