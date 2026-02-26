@@ -9,28 +9,28 @@ export { darkTheme } from './dark.js';
 export { forestTheme } from './forest.js';
 export { neutralTheme } from './neutral.js';
 
-function deepMerge<T extends Record<string, unknown>>(base: T, overrides: Partial<T>): T {
+function deepMerge(base: Record<string, any>, overrides: Record<string, any>): Record<string, any> {
   const result = { ...base };
-  for (const key of Object.keys(overrides) as Array<keyof T>) {
+  for (const key of Object.keys(overrides)) {
     const val = overrides[key];
     if (val !== undefined && typeof val === 'object' && val !== null && !Array.isArray(val)) {
       result[key] = deepMerge(
-        base[key] as Record<string, unknown>,
-        val as Record<string, unknown>,
-      ) as T[keyof T];
+        (base[key] as Record<string, any>) ?? {},
+        val as Record<string, any>,
+      );
     } else if (val !== undefined) {
-      result[key] = val as T[keyof T];
+      result[key] = val;
     }
   }
   return result;
 }
 
 export function createTheme(overrides: Partial<Theme>): Theme {
-  return deepMerge(defaultTheme, overrides);
+  return deepMerge(defaultTheme as unknown as Record<string, any>, overrides as Record<string, any>) as unknown as Theme;
 }
 
 export function mergeThemes(base: Theme, overrides: Partial<Theme>): Theme {
-  return deepMerge(base, overrides);
+  return deepMerge(base as unknown as Record<string, any>, overrides as Record<string, any>) as unknown as Theme;
 }
 
 const themeMap: Record<string, Theme> = {
