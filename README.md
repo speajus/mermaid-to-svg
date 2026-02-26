@@ -26,6 +26,9 @@ console.log(svg); // <svg xmlns="...">...</svg>
 ## Themes
 
 Four built-in themes matching mermaid's defaults: `default`, `dark`, `forest`, `neutral`.
+Try it out in the [Theme Builder](https://speajus.github.io/mermaid-to-svg).
+[![Screenshot](./image.png)]([destination_URL](https://speajus.github.io/mermaid-to-svg)) 
+
 
 ```typescript
 // Use by name
