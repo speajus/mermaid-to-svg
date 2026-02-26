@@ -35,7 +35,7 @@ export default defineConfig([
     format: ['esm', 'cjs'],
     dts: true,
     splitting: true,
-    clean: true,
+    clean: false,
     target: 'es2020',
     outDir: 'dist',
   },
