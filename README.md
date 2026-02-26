@@ -7,6 +7,7 @@ Mermaid diagrams to SVG strings without a browser. No Puppeteer, no Playwright, 
 ```bash
 npm install @speajus/mermaid-to-svg
 ```
+
 ## Quick Start
 
 ```typescript
