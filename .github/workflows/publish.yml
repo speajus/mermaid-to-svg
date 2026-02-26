@@ -35,7 +35,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           npm version patch -m "v%s"
 
-      - run: npm publish --access public
+      - run: npm publish --access public --provenance
 
       - name: Push version commit and tag
         run: git push --follow-tags
