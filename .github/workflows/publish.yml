@@ -35,7 +35,7 @@ jobs:
           npm version patch -m "v%s"
 
       - name: Publish to npm (OIDC trusted publishing)
-        run: npm publish --access public --provenance
+        run: NPM_TOKEN="" npm publish --access public --provenance
 
       - name: Push version commit and tag
         run: git push --follow-tags
