@@ -31,7 +31,7 @@ async function main() {
         fitTo: { mode: 'width' as const, value: Math.max(bounds.width * 2, 800) },
       });
       writeFileSync(join(OUTPUT_DIR, `${name}-${theme}.png`), resvg.render().asPng());
-      console.log(`✓ sample/${name} → ${bounds.width}x${bounds.height}`);
+      console.log(`✓ sample/${name}-${theme} → ${bounds.width}x${bounds.height}`);
     }
   }
   console.log(`\nAll outputs saved to ${OUTPUT_DIR}`);
