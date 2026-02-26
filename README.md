@@ -113,7 +113,71 @@ Mermaid Text → Parser (mermaid) → IR → Layout (ELK.js) → SVG (React rend
 
 ## Diagram Support
 
-Currently supports **flowchart/graph** diagrams. Sequence, class, state, and other diagram types are planned.
+### Flowchart
+
+```
+flowchart TD
+  A[Christmas] -->|Get money| B(Go shopping)
+  B --> C{Let me think}
+  C -->|One| D[Laptop]
+  C -->|Two| E[iPhone]
+  C -->|Three| F[fa:fa-car Car]
+```
+
+<img src="examples/output/flowchart.png" width="400" alt="Flowchart diagram" />
+
+### Sequence
+
+```
+sequenceDiagram
+  participant Alice
+  participant Bob
+  Alice->>Bob: Hello Bob, how are you?
+  Bob-->>Alice: Great!
+  Alice->>Bob: See you later!
+```
+
+<img src="examples/output/sequence.png" width="400" alt="Sequence diagram" />
+
+### Class
+
+```
+classDiagram
+  class Animal {
+    +int age
+    +String gender
+    +isMammal() bool
+  }
+  class Duck {
+    +String beakColor
+    +swim()
+  }
+  Animal <|-- Duck
+```
+
+<img src="examples/output/class.png" width="400" alt="Class diagram" />
+
+### State
+
+```
+stateDiagram-v2
+  [*] --> Idle
+  Idle --> Processing : submit
+  Processing --> Done : complete
+  Processing --> Error : fail
+  Error --> Idle : retry
+  Done --> [*]
+```
+
+<img src="examples/output/state.png" width="250" alt="State diagram" />
+
+### Themes
+
+Four built-in themes — here's the flowchart in each:
+
+| Default | Dark | Forest | Neutral |
+|---------|------|--------|---------|
+| <img src="examples/output/default.png" width="180" /> | <img src="examples/output/dark.png" width="180" /> | <img src="examples/output/forest.png" width="180" /> | <img src="examples/output/neutral.png" width="180" /> |
 
 ## Development
 
