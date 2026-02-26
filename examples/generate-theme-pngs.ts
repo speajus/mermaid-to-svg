@@ -8,7 +8,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUTPUT_DIR = join(__dirname, 'output');
 mkdirSync(OUTPUT_DIR, { recursive: true });
 
-const DIAGRAM = `
+const DIAGRAMS: Record<string, string> = {
+  flowchart: `
 flowchart TD
   A[Christmas] -->|Get money| B(Go shopping)
   B --> C{Let me think}
@@ -18,28 +19,72 @@ flowchart TD
   D --> G((Done))
   E --> G
   F --> G
-`;
+`,
+  sequence: `
+sequenceDiagram
+  participant Alice
+  participant Bob
+  Alice->>Bob: Hello Bob, how are you?
+  Bob-->>Alice: Great!
+  Alice->>Bob: See you later!
+`,
+  class: `
+classDiagram
+  class Animal {
+    +int age
+    +String gender
+    +isMammal() bool
+    +mate()
+  }
+  class Duck {
+    +String beakColor
+    +swim()
+    +quack()
+  }
+  class Fish {
+    -int sizeInFeet
+    +canEat()
+  }
+  Animal <|-- Duck
+  Animal <|-- Fish
+`,
+  state: `
+stateDiagram-v2
+  [*] --> Idle
+  Idle --> Processing : submit
+  Processing --> Done : complete
+  Processing --> Error : fail
+  Error --> Idle : retry
+  Done --> [*]
+`,
+};
 
 const themes = ['default', 'dark', 'forest', 'neutral'] as const;
 
 async function main() {
+  // Generate theme variants (flowchart only, for backward compat)
   for (const themeName of themes) {
-    const { svg, bounds } = await renderMermaid(DIAGRAM, { theme: themeName });
-
-    // Save SVG
+    const { svg, bounds } = await renderMermaid(DIAGRAMS.flowchart, { theme: themeName });
     writeFileSync(join(OUTPUT_DIR, `${themeName}.svg`), svg);
-
-    // Save PNG via resvg
     const resvg = new Resvg(svg, {
       fitTo: { mode: 'width' as const, value: Math.max(bounds.width * 2, 800) },
     });
-    const pngData = resvg.render();
-    writeFileSync(join(OUTPUT_DIR, `${themeName}.png`), pngData.asPng());
-
-    console.log(`✓ ${themeName} → ${bounds.width}x${bounds.height}`);
+    writeFileSync(join(OUTPUT_DIR, `${themeName}.png`), resvg.render().asPng());
+    console.log(`✓ theme/${themeName} → ${bounds.width}x${bounds.height}`);
   }
 
-  console.log(`\nAll PNGs saved to ${OUTPUT_DIR}`);
+  // Generate one sample per diagram type (default theme)
+  for (const [name, diagram] of Object.entries(DIAGRAMS)) {
+    const { svg, bounds } = await renderMermaid(diagram);
+    writeFileSync(join(OUTPUT_DIR, `${name}.svg`), svg);
+    const resvg = new Resvg(svg, {
+      fitTo: { mode: 'width' as const, value: Math.max(bounds.width * 2, 800) },
+    });
+    writeFileSync(join(OUTPUT_DIR, `${name}.png`), resvg.render().asPng());
+    console.log(`✓ sample/${name} → ${bounds.width}x${bounds.height}`);
+  }
+
+  console.log(`\nAll outputs saved to ${OUTPUT_DIR}`);
 }
 
 main().catch(console.error);
