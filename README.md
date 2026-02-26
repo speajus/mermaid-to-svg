@@ -1,6 +1,6 @@
-# mermaid-render
+# @speajus/mermaid-to-svg
 
-Render Mermaid diagrams to SVG strings without a browser. No Puppeteer, no Playwright, no headless Chrome — just Node.js.
+Mermaid diagrams to SVG strings without a browser. No Puppeteer, no Playwright, no headless Chrome — just Node.js (also works in browser).
 
 ## Install
 
