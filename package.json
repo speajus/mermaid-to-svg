@@ -1,5 +1,5 @@
 {
-  "name": "mermaid-render",
+  "name": "@speajus/mermaid-to-svg",
   "version": "0.1.0",
   "description": "Render Mermaid diagrams to SVG without a browser",
   "type": "module",
@@ -17,6 +17,15 @@
       "require": "./dist/themes/index.cjs",
       "types": "./dist/themes/index.d.ts"
     }
+  },
+   "files": [
+    "dist",
+    "README.md"
+  ],
+  "author": "Justin Spears <speajus@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/speajus/mermaid-to-svg.git"
   },
   "scripts": {
     "build": "tsup",
