@@ -20,9 +20,9 @@ async function renderToPng(
 ): Promise<Buffer> {
   const { svg, bounds } = await renderMermaid(mermaidText, { theme });
   const resvg = new Resvg(svg, {
-    fitTo: { mode: 'width' as const, value: Math.max(bounds.width * 2, 800) },
+    fitTo: { mode: 'width' as const, value: Math.max(bounds.width * 2, 400) },
   });
-  return Buffer.from(resvg.render().asPng());
+  return resvg.render().asPng();
 }
 
 /**
