@@ -44,38 +44,42 @@ flowchart TD
 const THEMES = ['default', 'dark', 'forest', 'neutral'] as const;
 const isCI = !!process.env.CI;
 
-describe('example PNG snapshots', { skip: isCI ? 'snapshot tests are skipped in CI' : false }, () => {
-  after(() => cleanup());
+describe(
+  'example PNG snapshots',
+  { skip: isCI ? 'snapshot tests are skipped in CI' : false },
+  () => {
+    after(() => cleanup());
 
-  for (const theme of THEMES) {
-    it(`${theme} theme matches snapshot`, async () => {
-      const snapshotPath = join(OUTPUT_DIR, `${theme}.png`);
-
-      const png = await renderToPng(DIAGRAM, theme);
-
-      if (!existsSync(snapshotPath)) {
-        mkdirSync(dirname(snapshotPath), { recursive: true });
-        writeFileSync(snapshotPath, png);
-        return;
-      }
-
-      const expected = createHash('sha1').update(readFileSync(snapshotPath)).digest('hex');
-      const actual = createHash('sha1').update(png).digest('hex');
-
-      assert.strictEqual(
-        actual,
-        expected,
-        `PNG snapshot mismatch for "${theme}" theme. ` +
-          `Expected hash ${expected}, got ${actual}. ` +
-          `Run with UPDATE_SNAPSHOTS=1 to update, or regenerate with "node --import tsx examples/generate-theme-pngs.ts".`,
-      );
-    });
-  }
-
-  it('all expected snapshot files exist', () => {
     for (const theme of THEMES) {
-      const snapshotPath = join(OUTPUT_DIR, `${theme}.png`);
-      assert.ok(existsSync(snapshotPath), `Missing snapshot: ${snapshotPath}`);
+      it(`${theme} theme matches snapshot`, async () => {
+        const snapshotPath = join(OUTPUT_DIR, `${theme}.png`);
+
+        const png = await renderToPng(DIAGRAM, theme);
+
+        if (!existsSync(snapshotPath)) {
+          mkdirSync(dirname(snapshotPath), { recursive: true });
+          writeFileSync(snapshotPath, png);
+          return;
+        }
+
+        const expected = createHash('sha1').update(readFileSync(snapshotPath)).digest('hex');
+        const actual = createHash('sha1').update(png).digest('hex');
+
+        assert.strictEqual(
+          actual,
+          expected,
+          `PNG snapshot mismatch for "${theme}" theme. ` +
+            `Expected hash ${expected}, got ${actual}. ` +
+            `Run with UPDATE_SNAPSHOTS=1 to update, or regenerate with "node --import tsx examples/generate-theme-pngs.ts".`,
+        );
+      });
     }
-  });
-});
+
+    it('all expected snapshot files exist', () => {
+      for (const theme of THEMES) {
+        const snapshotPath = join(OUTPUT_DIR, `${theme}.png`);
+        assert.ok(existsSync(snapshotPath), `Missing snapshot: ${snapshotPath}`);
+      }
+    });
+  },
+);
