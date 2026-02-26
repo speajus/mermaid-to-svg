@@ -70,7 +70,7 @@ describe('parse', () => {
 
   it('throws on unsupported diagram types', async () => {
     await assert.rejects(
-      () => parse('gantt\n  title A Gantt Diagram'),
+      () => parse('journey\n  title My Journey'),
       /Unsupported diagram type/,
     );
   });

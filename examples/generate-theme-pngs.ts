@@ -57,6 +57,44 @@ stateDiagram-v2
   Error --> Idle : retry
   Done --> [*]
 `,
+  er: `
+erDiagram
+  CUSTOMER {
+    string name
+    int id PK
+  }
+  ORDER {
+    int orderId PK
+    date created
+  }
+  CUSTOMER ||--o{ ORDER : places
+`,
+  gantt: `
+gantt
+  title Project Plan
+  dateFormat YYYY-MM-DD
+  section Design
+    Wireframes :a1, 2024-01-01, 10d
+    Mockups    :after a1, 5d
+  section Development
+    Backend    :2024-01-10, 20d
+`,
+  pie: `
+pie title Pets adopted
+  "Dogs" : 386
+  "Cats" : 85
+  "Rats" : 15
+`,
+  mindmap: `
+mindmap
+  root((Central))
+    Origins
+      Long history
+      Popularisation
+    Research
+      On effectiveness
+      On adoption
+`,
 };
 
 const themes = ['default', 'dark', 'forest', 'neutral'] as const;

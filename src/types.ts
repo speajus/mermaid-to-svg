@@ -2,7 +2,7 @@
 
 export type DiagramType = 'flowchart' | 'sequence' | 'class' | 'state' | 'er' | 'gantt' | 'pie' | 'mindmap';
 
-export type DiagramIR = FlowchartIR | SequenceIR | ClassIR | StateIR;
+export type DiagramIR = FlowchartIR | SequenceIR | ClassIR | StateIR | ERIR | GanttIR | PieIR | MindmapIR;
 
 // ── Flowchart IR ───────────────────────────────────────────────────────────
 
@@ -158,6 +158,92 @@ export interface StateIR {
   type: 'state';
   states: StateDef[];
   transitions: StateTransition[];
+}
+
+// ── ER Diagram IR ─────────────────────────────────────────────────────────
+
+export interface ERAttribute {
+  type: string;
+  name: string;
+  keys: string[];   // e.g. ['PK'], ['FK']
+  comment?: string;
+}
+
+export interface EREntity {
+  id: string;
+  label: string;
+  attributes: ERAttribute[];
+}
+
+export type ERCardinality = 'ZERO_OR_ONE' | 'ZERO_OR_MORE' | 'ONE_OR_MORE' | 'ONLY_ONE';
+export type ERRelType = 'IDENTIFYING' | 'NON_IDENTIFYING';
+
+export interface ERRelationship {
+  entityA: string;
+  entityB: string;
+  roleLabel: string;
+  cardA: ERCardinality;
+  cardB: ERCardinality;
+  relType: ERRelType;
+}
+
+export interface ERIR {
+  type: 'er';
+  entities: EREntity[];
+  relationships: ERRelationship[];
+}
+
+// ── Gantt Chart IR ────────────────────────────────────────────────────────
+
+export interface GanttTask {
+  id: string;
+  label: string;
+  section: string;
+  startTime: string;  // ISO date string
+  endTime: string;    // ISO date string
+  classes: string[];
+  order: number;
+}
+
+export interface GanttIR {
+  type: 'gantt';
+  title: string;
+  dateFormat: string;
+  sections: string[];
+  tasks: GanttTask[];
+}
+
+// ── Pie Chart IR ──────────────────────────────────────────────────────────
+
+export interface PieSection {
+  label: string;
+  value: number;
+}
+
+export interface PieIR {
+  type: 'pie';
+  title: string;
+  showData: boolean;
+  sections: PieSection[];
+}
+
+// ── Mindmap IR ────────────────────────────────────────────────────────────
+
+export type MindmapNodeType = 'default' | 'rounded_rect' | 'rect' | 'circle' | 'cloud' | 'bang' | 'hexagon';
+
+export interface MindmapNode {
+  id: number;
+  nodeId: string;
+  label: string;
+  type: MindmapNodeType;
+  level: number;
+  isRoot: boolean;
+  children: MindmapNode[];
+}
+
+export interface MindmapIR {
+  type: 'mindmap';
+  root: MindmapNode;
 }
 
 // ── Layout Result ──────────────────────────────────────────────────────────

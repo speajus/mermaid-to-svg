@@ -171,6 +171,64 @@ stateDiagram-v2
 
 <img src="examples/output/state.png" width="250" alt="State diagram" />
 
+### ER (Entity Relationship)
+
+```
+erDiagram
+  CUSTOMER {
+    string name
+    int id PK
+  }
+  ORDER {
+    int orderId PK
+    date created
+  }
+  CUSTOMER ||--o{ ORDER : places
+```
+
+<img src="examples/output/er.png" width="400" alt="ER diagram" />
+
+### Gantt
+
+```
+gantt
+  title Project Plan
+  dateFormat YYYY-MM-DD
+  section Design
+    Wireframes :a1, 2024-01-01, 10d
+    Mockups    :after a1, 5d
+  section Development
+    Backend    :2024-01-10, 20d
+```
+
+<img src="examples/output/gantt.png" width="500" alt="Gantt chart" />
+
+### Pie
+
+```
+pie title Pets adopted
+  "Dogs" : 386
+  "Cats" : 85
+  "Rats" : 15
+```
+
+<img src="examples/output/pie.png" width="400" alt="Pie chart" />
+
+### Mindmap
+
+```
+mindmap
+  root((Central))
+    Origins
+      Long history
+      Popularisation
+    Research
+      On effectiveness
+      On adoption
+```
+
+<img src="examples/output/mindmap.png" width="400" alt="Mindmap" />
+
 ### Themes
 
 Four built-in themes — here's the flowchart in each:

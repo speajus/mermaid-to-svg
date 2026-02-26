@@ -411,3 +411,151 @@ describe('state edge cases', () => {
     assert.ok(svg.startsWith('<svg'));
   });
 });
+
+// ── ER Diagrams ───────────────────────────────────────────────────────────
+
+describe('ER diagram', () => {
+  const ER = `erDiagram
+    CUSTOMER {
+      string name
+      int id PK
+    }
+    ORDER {
+      int orderId PK
+      date created
+    }
+    CUSTOMER ||--o{ ORDER : places
+  `;
+
+  it('parses entities and relationships', async () => {
+    const ir = await parse(ER);
+    assert.equal(ir.type, 'er');
+    if (ir.type !== 'er') return;
+    assert.ok(ir.entities.length >= 2, `Expected >= 2 entities, got ${ir.entities.length}`);
+    assert.ok(ir.relationships.length >= 1, `Expected >= 1 relationship`);
+    assert.equal(ir.relationships[0].roleLabel, 'places');
+  });
+
+  it('parses entity attributes', async () => {
+    const ir = await parse(ER);
+    if (ir.type !== 'er') return;
+    const customer = ir.entities.find(e => e.label === 'CUSTOMER');
+    assert.ok(customer, 'Expected CUSTOMER entity');
+    assert.ok(customer!.attributes.length >= 2, `Expected >= 2 attributes`);
+    const pk = customer!.attributes.find(a => a.keys.includes('PK'));
+    assert.ok(pk, 'Expected PK attribute');
+  });
+
+  it('layouts and renders SVG', async () => {
+    const ir = await parse(ER);
+    const positioned = await layout(ir);
+    assert.equal(positioned.diagramType, 'er');
+    const svg = renderSvg(positioned, defaultTheme);
+    assert.ok(svg.startsWith('<svg'));
+    assert.ok(svg.includes('CUSTOMER'));
+    assert.ok(svg.includes('ORDER'));
+    assert.ok(svg.includes('places'));
+  });
+});
+
+// ── Gantt Charts ──────────────────────────────────────────────────────────
+
+describe('gantt chart', () => {
+  const GANTT = `gantt
+    title Project Plan
+    dateFormat YYYY-MM-DD
+    section Design
+      Wireframes :a1, 2024-01-01, 10d
+      Mockups    :after a1, 5d
+    section Development
+      Backend    :2024-01-10, 20d
+  `;
+
+  it('parses tasks and sections', async () => {
+    const ir = await parse(GANTT);
+    assert.equal(ir.type, 'gantt');
+    if (ir.type !== 'gantt') return;
+    assert.equal(ir.title, 'Project Plan');
+    assert.ok(ir.sections.length >= 2, `Expected >= 2 sections, got ${ir.sections.length}`);
+    assert.ok(ir.tasks.length >= 3, `Expected >= 3 tasks, got ${ir.tasks.length}`);
+    const wireframes = ir.tasks.find(t => t.label.includes('Wireframes'));
+    assert.ok(wireframes, 'Expected Wireframes task');
+  });
+
+  it('layouts and renders SVG', async () => {
+    const ir = await parse(GANTT);
+    const positioned = await layout(ir);
+    assert.equal(positioned.diagramType, 'gantt');
+    const svg = renderSvg(positioned, defaultTheme);
+    assert.ok(svg.startsWith('<svg'));
+    assert.ok(svg.includes('Project Plan'));
+    assert.ok(svg.includes('Wireframes'));
+  });
+});
+
+// ── Pie Charts ────────────────────────────────────────────────────────────
+
+describe('pie chart', () => {
+  const PIE = `pie title Pets adopted
+    "Dogs" : 386
+    "Cats" : 85
+    "Rats" : 15
+  `;
+
+  it('parses sections with values', async () => {
+    const ir = await parse(PIE);
+    assert.equal(ir.type, 'pie');
+    if (ir.type !== 'pie') return;
+    assert.equal(ir.title, 'Pets adopted');
+    assert.equal(ir.sections.length, 3);
+    const dogs = ir.sections.find(s => s.label === 'Dogs');
+    assert.ok(dogs, 'Expected Dogs section');
+    assert.equal(dogs!.value, 386);
+  });
+
+  it('layouts and renders SVG', async () => {
+    const ir = await parse(PIE);
+    const positioned = await layout(ir);
+    assert.equal(positioned.diagramType, 'pie');
+    const svg = renderSvg(positioned, defaultTheme);
+    assert.ok(svg.startsWith('<svg'));
+    assert.ok(svg.includes('Pets adopted'));
+    assert.ok(svg.includes('Dogs'));
+  });
+});
+
+// ── Mindmap ───────────────────────────────────────────────────────────────
+
+describe('mindmap', () => {
+  const MINDMAP = `mindmap
+  root((Central))
+    Origins
+      Long history
+      Popularisation
+    Research
+      On effectiveness
+  `;
+
+  it('parses tree structure', async () => {
+    const ir = await parse(MINDMAP);
+    assert.equal(ir.type, 'mindmap');
+    if (ir.type !== 'mindmap') return;
+    assert.equal(ir.root.label, 'Central');
+    assert.ok(ir.root.isRoot);
+    assert.ok(ir.root.children.length >= 2, `Expected >= 2 children, got ${ir.root.children.length}`);
+    const origins = ir.root.children.find(c => c.label === 'Origins');
+    assert.ok(origins, 'Expected Origins child');
+    assert.ok(origins!.children.length >= 2);
+  });
+
+  it('layouts and renders SVG', async () => {
+    const ir = await parse(MINDMAP);
+    const positioned = await layout(ir);
+    assert.equal(positioned.diagramType, 'mindmap');
+    const svg = renderSvg(positioned, defaultTheme);
+    assert.ok(svg.startsWith('<svg'));
+    assert.ok(svg.includes('Central'));
+    assert.ok(svg.includes('Origins'));
+    assert.ok(svg.includes('Research'));
+  });
+});
