@@ -336,6 +336,20 @@ export interface LayoutResult {
 
 // ── Theme ──────────────────────────────────────────────────────────────────
 
+export interface GradientConfig {
+  type: 'linear' | 'radial';
+  from: string; // start color
+  to: string; // end color
+  direction?: number; // angle in degrees (0 = top-to-bottom), default 180
+}
+
+export interface ShadowConfig {
+  dx: number;
+  dy: number;
+  blur: number;
+  color: string; // e.g. 'rgba(0,0,0,0.2)'
+}
+
 export interface NodeStyle {
   fill: string;
   stroke: string;
@@ -344,6 +358,9 @@ export interface NodeStyle {
   ry?: number;
   textColor: string;
   padding: number;
+  gradient?: GradientConfig;
+  shadow?: ShadowConfig;
+  fillOpacity?: number;
 }
 
 export interface EdgeStyle {

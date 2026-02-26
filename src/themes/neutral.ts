@@ -1,5 +1,7 @@
 import type { Theme } from '../types.js';
 
+const neutralShadow = { dx: 1, dy: 2, blur: 3, color: 'rgba(0,0,0,0.12)' };
+
 export const neutralTheme: Theme = {
   background: '#ffffff',
   primaryColor: '#eeeeee',
@@ -17,10 +19,12 @@ export const neutralTheme: Theme = {
       fill: '#eeeeee',
       stroke: '#999999',
       strokeWidth: 1.5,
-      rx: 4,
-      ry: 4,
+      rx: 5,
+      ry: 5,
       textColor: '#111111',
       padding: 12,
+      gradient: { type: 'linear', from: '#f8f8f8', to: '#e0e0e0', direction: 180 },
+      shadow: neutralShadow,
     },
     decision: {
       fill: '#eeeeee',
@@ -28,6 +32,8 @@ export const neutralTheme: Theme = {
       strokeWidth: 1.5,
       textColor: '#111111',
       padding: 12,
+      gradient: { type: 'linear', from: '#f8f8f8', to: '#e0e0e0', direction: 180 },
+      shadow: neutralShadow,
     },
     rounded: {
       fill: '#fcfcfc',
@@ -37,6 +43,8 @@ export const neutralTheme: Theme = {
       ry: 20,
       textColor: '#111111',
       padding: 12,
+      gradient: { type: 'linear', from: '#ffffff', to: '#f0f0f0', direction: 180 },
+      shadow: neutralShadow,
     },
     circle: {
       fill: '#eeeeee',
@@ -44,6 +52,8 @@ export const neutralTheme: Theme = {
       strokeWidth: 1.5,
       textColor: '#111111',
       padding: 12,
+      gradient: { type: 'radial', from: '#f8f8f8', to: '#e0e0e0' },
+      shadow: neutralShadow,
     },
     cylinder: {
       fill: '#fcfcfc',
@@ -51,6 +61,8 @@ export const neutralTheme: Theme = {
       strokeWidth: 1.5,
       textColor: '#111111',
       padding: 12,
+      gradient: { type: 'linear', from: '#ffffff', to: '#f0f0f0', direction: 180 },
+      shadow: neutralShadow,
     },
     subroutine: {
       fill: '#eeeeee',
@@ -60,6 +72,8 @@ export const neutralTheme: Theme = {
       ry: 0,
       textColor: '#111111',
       padding: 12,
+      gradient: { type: 'linear', from: '#f8f8f8', to: '#e0e0e0', direction: 180 },
+      shadow: neutralShadow,
     },
   },
   edgeStyles: {
