@@ -9,6 +9,10 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "browser": {
+        "types": "./dist/browser/index.d.ts",
+        "default": "./dist/browser/index.js"
+      },
       "import": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
@@ -16,6 +20,16 @@
       "require": {
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
+      }
+    },
+    "./browser": {
+      "import": {
+        "types": "./dist/browser/index.d.ts",
+        "default": "./dist/browser/index.js"
+      },
+      "require": {
+        "types": "./dist/browser/index.d.cts",
+        "default": "./dist/browser/index.cjs"
       }
     },
     "./themes": {
@@ -34,6 +48,7 @@
   },
   "files": [
     "dist",
+    "dist/browser",
     "README.md"
   ],
   "author": "Justin Spears <speajus@gmail.com>",
@@ -42,7 +57,7 @@
     "url": "git+https://github.com/speajus/mermaid-to-svg.git"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "rm -rf dist && tsup",
     "test": "node --import tsx --test --test-force-exit --test-concurrency=1 --test-timeout=120000 test/**/*.test.ts",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
