@@ -10,11 +10,7 @@ function browserMermaidSetup(): Plugin {
     name: 'browser-mermaid-setup',
     enforce: 'pre',
     resolveId(source, importer) {
-      if (
-        importer &&
-        !source.includes('.browser') &&
-        source.includes('mermaid-setup')
-      ) {
+      if (importer && !source.includes('.browser') && source.includes('mermaid-setup')) {
         return path.resolve(path.dirname(importer), 'mermaid-setup.browser.ts');
       }
     },
