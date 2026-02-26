@@ -18,7 +18,10 @@
       "types": "./dist/themes/index.d.ts"
     }
   },
-   "files": [
+  "bin": {
+    "mermaid-to-svg": "./dist/cli.js"
+  },
+  "files": [
     "dist",
     "README.md"
   ],
@@ -42,6 +45,7 @@
   },
   "devDependencies": {
     "@resvg/resvg-js": "^2.6.0",
+    "@types/node": "^25.3.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "tsup": "^8.0.0",
