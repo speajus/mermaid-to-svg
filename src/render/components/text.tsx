@@ -8,8 +8,8 @@ interface LabelTextProps {
   fontFamily: string;
   fill: string;
   fontWeight?: string | number;
-  textAnchor?: string;
-  dominantBaseline?: string;
+  textAnchor?: 'start' | 'middle' | 'end' | 'inherit';
+  dominantBaseline?: 'auto' | 'middle' | 'central' | 'hanging' | 'alphabetic' | 'ideographic' | 'mathematical' | 'text-before-edge' | 'text-after-edge' | 'inherit';
 }
 
 export function LabelText({

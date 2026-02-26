@@ -10,7 +10,7 @@ let setupDone = false;
 async function ensureDomGlobals() {
   if (setupDone) return;
   // Only set up DOM globals if we're in a non-browser environment
-  if (typeof window === 'undefined' || typeof document === 'undefined') {
+  if (!('window' in globalThis) || !('document' in globalThis)) {
     const { JSDOM } = await import('jsdom');
     const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
     (globalThis as Record<string, unknown>).window = dom.window;

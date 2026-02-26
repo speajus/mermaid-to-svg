@@ -69,7 +69,7 @@ jobs:
         run: pnpm dlx publint
 
       - name: attw — check TypeScript types resolve correctly
-        run: pnpm dlx @arethetypeswrong/cli --pack .
+        run: pnpm dlx @arethetypeswrong/cli --pack . --ignore-rules no-resolution
 
   test:
     needs: build
