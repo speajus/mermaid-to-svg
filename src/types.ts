@@ -1,15 +1,39 @@
 // ── Diagram Types ──────────────────────────────────────────────────────────
 
-export type DiagramType = 'flowchart' | 'sequence' | 'class' | 'state' | 'er' | 'gantt' | 'pie' | 'mindmap';
+export type DiagramType =
+  | 'flowchart'
+  | 'sequence'
+  | 'class'
+  | 'state'
+  | 'er'
+  | 'gantt'
+  | 'pie'
+  | 'mindmap';
 
-export type DiagramIR = FlowchartIR | SequenceIR | ClassIR | StateIR | ERIR | GanttIR | PieIR | MindmapIR;
+export type DiagramIR =
+  | FlowchartIR
+  | SequenceIR
+  | ClassIR
+  | StateIR
+  | ERIR
+  | GanttIR
+  | PieIR
+  | MindmapIR;
 
 // ── Flowchart IR ───────────────────────────────────────────────────────────
 
 export type NodeShape =
-  | 'rect' | 'rounded' | 'circle' | 'diamond' | 'hexagon'
-  | 'cylinder' | 'stadium' | 'subroutine' | 'odd'
-  | 'parallelogram' | 'trapezoid';
+  | 'rect'
+  | 'rounded'
+  | 'circle'
+  | 'diamond'
+  | 'hexagon'
+  | 'cylinder'
+  | 'stadium'
+  | 'subroutine'
+  | 'odd'
+  | 'parallelogram'
+  | 'trapezoid';
 
 export interface IRNode {
   id: string;
@@ -45,7 +69,17 @@ export interface FlowchartIR {
 
 // ── Sequence Diagram IR ────────────────────────────────────────────────────
 
-export type SequenceMessageType = 'solid' | 'dotted' | 'solid_cross' | 'dotted_cross' | 'solid_open' | 'dotted_open' | 'solid_point' | 'dotted_point' | 'bidirectional_solid' | 'bidirectional_dotted';
+export type SequenceMessageType =
+  | 'solid'
+  | 'dotted'
+  | 'solid_cross'
+  | 'dotted_cross'
+  | 'solid_open'
+  | 'dotted_open'
+  | 'solid_point'
+  | 'dotted_point'
+  | 'bidirectional_solid'
+  | 'bidirectional_dotted';
 
 export interface SequenceParticipant {
   id: string;
@@ -115,7 +149,14 @@ export interface ClassDef {
   type: string;
 }
 
-export type ClassRelationType = 'inheritance' | 'composition' | 'aggregation' | 'association' | 'dependency' | 'realization' | 'lollipop';
+export type ClassRelationType =
+  | 'inheritance'
+  | 'composition'
+  | 'aggregation'
+  | 'association'
+  | 'dependency'
+  | 'realization'
+  | 'lollipop';
 export type ClassLineType = 'solid' | 'dotted';
 
 export interface ClassRelationship {
@@ -165,7 +206,7 @@ export interface StateIR {
 export interface ERAttribute {
   type: string;
   name: string;
-  keys: string[];   // e.g. ['PK'], ['FK']
+  keys: string[]; // e.g. ['PK'], ['FK']
   comment?: string;
 }
 
@@ -199,8 +240,8 @@ export interface GanttTask {
   id: string;
   label: string;
   section: string;
-  startTime: string;  // ISO date string
-  endTime: string;    // ISO date string
+  startTime: string; // ISO date string
+  endTime: string; // ISO date string
   classes: string[];
   order: number;
 }
@@ -229,7 +270,14 @@ export interface PieIR {
 
 // ── Mindmap IR ────────────────────────────────────────────────────────────
 
-export type MindmapNodeType = 'default' | 'rounded_rect' | 'rect' | 'circle' | 'cloud' | 'bang' | 'hexagon';
+export type MindmapNodeType =
+  | 'default'
+  | 'rounded_rect'
+  | 'rect'
+  | 'circle'
+  | 'cloud'
+  | 'bang'
+  | 'hexagon';
 
 export interface MindmapNode {
   id: number;
@@ -346,7 +394,12 @@ export interface TextMetrics {
 }
 
 export interface FontMetricsProvider {
-  measureText(text: string, fontSize: number, fontFamily: string, fontWeight?: string | number): TextMetrics;
+  measureText(
+    text: string,
+    fontSize: number,
+    fontFamily: string,
+    fontWeight?: string | number,
+  ): TextMetrics;
 }
 
 // ── Public API Types ───────────────────────────────────────────────────────
@@ -372,4 +425,3 @@ export interface LayoutOptions {
   fontMetrics?: FontMetricsProvider;
   padding?: number;
 }
-

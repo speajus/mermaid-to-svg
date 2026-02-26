@@ -24,7 +24,9 @@ function detectDiagramType(text: string): string {
   if (firstLine.startsWith('gantt')) return 'gantt';
   if (firstLine.startsWith('pie')) return 'pie';
   if (firstLine.startsWith('mindmap')) return 'mindmap';
-  throw new Error(`Unsupported diagram type: "${firstLine}". Supported: flowchart, sequenceDiagram, classDiagram, stateDiagram, erDiagram, gantt, pie, mindmap.`);
+  throw new Error(
+    `Unsupported diagram type: "${firstLine}". Supported: flowchart, sequenceDiagram, classDiagram, stateDiagram, erDiagram, gantt, pie, mindmap.`,
+  );
 }
 
 /**
@@ -34,16 +36,23 @@ export async function parse(input: string): Promise<DiagramIR> {
   const diagramType = detectDiagramType(input);
 
   switch (diagramType) {
-    case 'flowchart': return parseFlowchart(input);
-    case 'sequence': return parseSequence(input);
-    case 'class': return parseClass(input);
-    case 'state': return parseState(input);
-    case 'er': return parseER(input);
-    case 'gantt': return parseGantt(input);
-    case 'pie': return parsePie(input);
-    case 'mindmap': return parseMindmap(input);
+    case 'flowchart':
+      return parseFlowchart(input);
+    case 'sequence':
+      return parseSequence(input);
+    case 'class':
+      return parseClass(input);
+    case 'state':
+      return parseState(input);
+    case 'er':
+      return parseER(input);
+    case 'gantt':
+      return parseGantt(input);
+    case 'pie':
+      return parsePie(input);
+    case 'mindmap':
+      return parseMindmap(input);
     default:
       throw new Error(`Parser not implemented for diagram type: ${diagramType}`);
   }
 }
-

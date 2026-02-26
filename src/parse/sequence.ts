@@ -1,19 +1,25 @@
 import type {
-  SequenceIR, SequenceParticipant, SequenceMessage, SequenceNote,
-  SequenceActivation, SequenceBlock, SequenceBlockSection, SequenceMessageType,
+  SequenceIR,
+  SequenceParticipant,
+  SequenceMessage,
+  SequenceNote,
+  SequenceActivation,
+  SequenceBlock,
+  SequenceBlockSection,
+  SequenceMessageType,
 } from '../types.js';
 import { fetchMermaid } from './mermaid-setup.js';
 
 /** Map mermaid LINETYPE numbers to our message types */
 const LINE_TYPE_MAP: Record<number, SequenceMessageType> = {
-  0: 'solid',          // SOLID
-  1: 'dotted',         // DOTTED
-  3: 'solid_cross',    // SOLID_CROSS
-  4: 'dotted_cross',   // DOTTED_CROSS
-  5: 'solid_open',     // SOLID_OPEN
-  6: 'dotted_open',    // DOTTED_OPEN
-  24: 'solid_point',   // SOLID_POINT
-  25: 'dotted_point',  // DOTTED_POINT
+  0: 'solid', // SOLID
+  1: 'dotted', // DOTTED
+  3: 'solid_cross', // SOLID_CROSS
+  4: 'dotted_cross', // DOTTED_CROSS
+  5: 'solid_open', // SOLID_OPEN
+  6: 'dotted_open', // DOTTED_OPEN
+  24: 'solid_point', // SOLID_POINT
+  25: 'dotted_point', // DOTTED_POINT
   33: 'bidirectional_solid',
   34: 'bidirectional_dotted',
 };
@@ -21,17 +27,32 @@ const LINE_TYPE_MAP: Record<number, SequenceMessageType> = {
 /** Mermaid LINETYPE constants for structural messages */
 const STRUCT = {
   NOTE: 2,
-  LOOP_START: 10, LOOP_END: 11,
-  ALT_START: 12, ALT_ELSE: 13, ALT_END: 14,
-  OPT_START: 15, OPT_END: 16,
-  ACTIVE_START: 17, ACTIVE_END: 18,
-  PAR_START: 19, PAR_AND: 20, PAR_END: 21,
-  RECT_START: 22, RECT_END: 23,
-  CRITICAL_START: 27, CRITICAL_OPTION: 28, CRITICAL_END: 29,
-  BREAK_START: 30, BREAK_END: 31,
+  LOOP_START: 10,
+  LOOP_END: 11,
+  ALT_START: 12,
+  ALT_ELSE: 13,
+  ALT_END: 14,
+  OPT_START: 15,
+  OPT_END: 16,
+  ACTIVE_START: 17,
+  ACTIVE_END: 18,
+  PAR_START: 19,
+  PAR_AND: 20,
+  PAR_END: 21,
+  RECT_START: 22,
+  RECT_END: 23,
+  CRITICAL_START: 27,
+  CRITICAL_OPTION: 28,
+  CRITICAL_END: 29,
+  BREAK_START: 30,
+  BREAK_END: 31,
 } as const;
 
-const PLACEMENT_MAP: Record<number, 'left' | 'right' | 'over'> = { 0: 'left', 1: 'right', 2: 'over' };
+const PLACEMENT_MAP: Record<number, 'left' | 'right' | 'over'> = {
+  0: 'left',
+  1: 'right',
+  2: 'over',
+};
 
 export async function parseSequence(text: string): Promise<SequenceIR> {
   const mermaid = await fetchMermaid();
@@ -45,7 +66,7 @@ export async function parseSequence(text: string): Promise<SequenceIR> {
     return {
       id: key,
       label: actor.description ?? key,
-      type: actor.type === 'actor' ? 'actor' as const : 'participant' as const,
+      type: actor.type === 'actor' ? ('actor' as const) : ('participant' as const),
     };
   });
 
@@ -77,11 +98,19 @@ export async function parseSequence(text: string): Promise<SequenceIR> {
     } else if (t === STRUCT.ACTIVE_END) {
       const startId = activeStarts.get(raw.from);
       if (startId) {
-        activations.push({ participant: raw.from, startMessageId: startId, endMessageId: `msg-${msgCounter}` });
+        activations.push({
+          participant: raw.from,
+          startMessageId: startId,
+          endMessageId: `msg-${msgCounter}`,
+        });
         activeStarts.delete(raw.from);
       }
     } else if (isBlockStart(t)) {
-      blockStack.push({ type: resolveBlockType(t), label: raw.message ?? '', sections: [{ messages: [] }] });
+      blockStack.push({
+        type: resolveBlockType(t),
+        label: raw.message ?? '',
+        sections: [{ messages: [] }],
+      });
     } else if (isBlockElse(t)) {
       const current = blockStack[blockStack.length - 1];
       if (current) current.sections.push({ label: raw.message ?? undefined, messages: [] });
@@ -110,13 +139,29 @@ export async function parseSequence(text: string): Promise<SequenceIR> {
 }
 
 function isBlockStart(t: number): boolean {
-  return [STRUCT.LOOP_START, STRUCT.ALT_START, STRUCT.OPT_START, STRUCT.PAR_START, STRUCT.RECT_START, STRUCT.CRITICAL_START, STRUCT.BREAK_START].includes(t as any);
+  return [
+    STRUCT.LOOP_START,
+    STRUCT.ALT_START,
+    STRUCT.OPT_START,
+    STRUCT.PAR_START,
+    STRUCT.RECT_START,
+    STRUCT.CRITICAL_START,
+    STRUCT.BREAK_START,
+  ].includes(t as any);
 }
 function isBlockElse(t: number): boolean {
   return [STRUCT.ALT_ELSE, STRUCT.PAR_AND, STRUCT.CRITICAL_OPTION].includes(t as any);
 }
 function isBlockEnd(t: number): boolean {
-  return [STRUCT.LOOP_END, STRUCT.ALT_END, STRUCT.OPT_END, STRUCT.PAR_END, STRUCT.RECT_END, STRUCT.CRITICAL_END, STRUCT.BREAK_END].includes(t as any);
+  return [
+    STRUCT.LOOP_END,
+    STRUCT.ALT_END,
+    STRUCT.OPT_END,
+    STRUCT.PAR_END,
+    STRUCT.RECT_END,
+    STRUCT.CRITICAL_END,
+    STRUCT.BREAK_END,
+  ].includes(t as any);
 }
 function resolveBlockType(t: number): string {
   if (t === STRUCT.LOOP_START) return 'loop';
@@ -128,4 +173,3 @@ function resolveBlockType(t: number): string {
   if (t === STRUCT.BREAK_START) return 'break';
   return 'loop';
 }
-

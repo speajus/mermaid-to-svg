@@ -14,10 +14,7 @@ function deepMerge(base: Record<string, any>, overrides: Record<string, any>): R
   for (const key of Object.keys(overrides)) {
     const val = overrides[key];
     if (val !== undefined && typeof val === 'object' && val !== null && !Array.isArray(val)) {
-      result[key] = deepMerge(
-        (base[key] as Record<string, any>) ?? {},
-        val as Record<string, any>,
-      );
+      result[key] = deepMerge((base[key] as Record<string, any>) ?? {}, val as Record<string, any>);
     } else if (val !== undefined) {
       result[key] = val;
     }
@@ -26,11 +23,17 @@ function deepMerge(base: Record<string, any>, overrides: Record<string, any>): R
 }
 
 export function createTheme(overrides: Partial<Theme>): Theme {
-  return deepMerge(defaultTheme as unknown as Record<string, any>, overrides as Record<string, any>) as unknown as Theme;
+  return deepMerge(
+    defaultTheme as unknown as Record<string, any>,
+    overrides as Record<string, any>,
+  ) as unknown as Theme;
 }
 
 export function mergeThemes(base: Theme, overrides: Partial<Theme>): Theme {
-  return deepMerge(base as unknown as Record<string, any>, overrides as Record<string, any>) as unknown as Theme;
+  return deepMerge(
+    base as unknown as Record<string, any>,
+    overrides as Record<string, any>,
+  ) as unknown as Theme;
 }
 
 const themeMap: Record<string, Theme> = {
@@ -40,7 +43,9 @@ const themeMap: Record<string, Theme> = {
   neutral: neutralTheme,
 };
 
-export function resolveTheme(theme: Theme | 'default' | 'dark' | 'forest' | 'neutral' | undefined): Theme {
+export function resolveTheme(
+  theme: Theme | 'default' | 'dark' | 'forest' | 'neutral' | undefined,
+): Theme {
   if (!theme) return defaultTheme;
   if (typeof theme === 'string') return themeMap[theme] ?? defaultTheme;
   return theme;
@@ -59,4 +64,3 @@ export function resolveNodeStyle(theme: Theme, shape: string): NodeStyle {
 export function resolveEdgeStyle(theme: Theme, type: string): EdgeStyle {
   return theme.edgeStyles[type] ?? theme.edgeStyles.default;
 }
-

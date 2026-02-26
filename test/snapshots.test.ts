@@ -71,11 +71,7 @@ describe('example PNG snapshots', () => {
   it('all expected snapshot files exist', () => {
     for (const theme of THEMES) {
       const snapshotPath = join(OUTPUT_DIR, `${theme}.png`);
-      assert.ok(
-        existsSync(snapshotPath),
-        `Missing snapshot: ${snapshotPath}`,
-      );
+      assert.ok(existsSync(snapshotPath), `Missing snapshot: ${snapshotPath}`);
     }
   });
 });
-

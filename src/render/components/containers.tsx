@@ -20,9 +20,7 @@ export function SvgRoot({ width, height, padding, background, idPrefix, children
       role="img"
     >
       <rect width={width} height={height} fill={background} />
-      <g transform={`translate(${padding}, ${padding})`}>
-        {children}
-      </g>
+      <g transform={`translate(${padding}, ${padding})`}>{children}</g>
     </svg>
   );
 }
@@ -83,4 +81,3 @@ export function ArrowDefs({ idPrefix, theme }: ArrowDefsProps) {
     </defs>
   );
 }
-

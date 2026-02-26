@@ -1,18 +1,26 @@
 import type {
-  ClassIR, ClassDef, ClassMember, ClassRelationship,
-  ClassRelationType, ClassLineType,
+  ClassIR,
+  ClassDef,
+  ClassMember,
+  ClassRelationship,
+  ClassRelationType,
+  ClassLineType,
 } from '../types.js';
 import { fetchMermaid } from './mermaid-setup.js';
 
 /** Map mermaid's numeric relation type1/type2 to our types */
 const RELATION_TYPE_MAP: Record<number, ClassRelationType> = {
-  0: 'aggregation',    // type1=0 → open diamond
-  1: 'inheritance',    // type1=1 → filled arrow (extension)
-  2: 'composition',    // type1=2 → filled diamond
-  3: 'dependency',     // type2=3 → open arrow
+  0: 'aggregation', // type1=0 → open diamond
+  1: 'inheritance', // type1=1 → filled arrow (extension)
+  2: 'composition', // type1=2 → filled diamond
+  3: 'dependency', // type2=3 → open arrow
 };
 
-function resolveRelationType(type1: any, type2: any, lineType: number): { relationType: ClassRelationType; lineType: ClassLineType } {
+function resolveRelationType(
+  type1: any,
+  type2: any,
+  lineType: number,
+): { relationType: ClassRelationType; lineType: ClassLineType } {
   const line: ClassLineType = lineType === 1 ? 'dotted' : 'solid';
 
   // type1 is the source-side marker, type2 is the target-side marker
@@ -27,7 +35,7 @@ function resolveRelationType(type1: any, type2: any, lineType: number): { relati
 
 function cleanMemberText(text: string): string {
   // Mermaid escapes + and - with backslash
-  return text.replace(/^\\[+\-#~]/, m => m[1]);
+  return text.replace(/^\\[+\-#~]/, (m) => m[1]);
 }
 
 export async function parseClass(text: string): Promise<ClassIR> {
@@ -69,7 +77,9 @@ export async function parseClass(text: string): Promise<ClassIR> {
   const rawRelations: any[] = db.getRelations();
   const relationships: ClassRelationship[] = rawRelations.map((r, i) => {
     const { relationType, lineType } = resolveRelationType(
-      r.relation?.type1, r.relation?.type2, r.relation?.lineType ?? 0,
+      r.relation?.type1,
+      r.relation?.type2,
+      r.relation?.lineType ?? 0,
     );
     return {
       id: `rel-${i}`,
@@ -89,4 +99,3 @@ export async function parseClass(text: string): Promise<ClassIR> {
 
   return { type: 'class', classes, relationships, direction };
 }
-

@@ -34,13 +34,15 @@ export async function parseER(text: string): Promise<ERIR> {
 
   // Relationships
   const rawRels: any[] = db.relationships ?? [];
-  const relationships: ERRelationship[] = rawRels.map(r => ({
+  const relationships: ERRelationship[] = rawRels.map((r) => ({
     entityA: r.entityA,
     entityB: r.entityB,
     roleLabel: r.roleA ?? '',
     cardA: resolveCardinality(r.relSpec?.cardA),
     cardB: resolveCardinality(r.relSpec?.cardB),
-    relType: (r.relSpec?.relType === 'NON_IDENTIFYING' ? 'NON_IDENTIFYING' : 'IDENTIFYING') as ERRelType,
+    relType: (r.relSpec?.relType === 'NON_IDENTIFYING'
+      ? 'NON_IDENTIFYING'
+      : 'IDENTIFYING') as ERRelType,
   }));
 
   // If entities map was empty, derive from relationships
@@ -60,4 +62,3 @@ export async function parseER(text: string): Promise<ERIR> {
 
   return { type: 'er', entities, relationships };
 }
-

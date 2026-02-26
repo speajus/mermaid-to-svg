@@ -53,11 +53,11 @@ Full pipeline: parse → layout → render. Returns `{ svg, bounds, diagramType 
 
 ```typescript
 const result = await renderMermaid(mermaidText, {
-  theme: 'dark',        // 'default' | 'dark' | 'forest' | 'neutral' | Theme object
-  padding: 20,          // pixels around the diagram
-  idPrefix: 'mermaid',  // unique prefix for SVG element IDs
+  theme: 'dark', // 'default' | 'dark' | 'forest' | 'neutral' | Theme object
+  padding: 20, // pixels around the diagram
+  idPrefix: 'mermaid', // unique prefix for SVG element IDs
   fontMetrics: provider, // custom FontMetricsProvider for text measurement
-  layoutOptions: {},     // ELK layout options override
+  layoutOptions: {}, // ELK layout options override
 });
 ```
 
@@ -68,9 +68,9 @@ For advanced usage, each step is available separately:
 ```typescript
 import { parse, layout, renderSvg } from 'mermaid-render';
 
-const ir = await parse(mermaidText);       // Mermaid text → IR
-const positioned = await layout(ir);        // IR → positioned graph
-const svg = renderSvg(positioned);          // positioned graph → SVG string
+const ir = await parse(mermaidText); // Mermaid text → IR
+const positioned = await layout(ir); // IR → positioned graph
+const svg = renderSvg(positioned); // positioned graph → SVG string
 ```
 
 ### Theme Utilities
@@ -233,8 +233,8 @@ mindmap
 
 Four built-in themes — here's the flowchart in each:
 
-| Default | Dark | Forest | Neutral |
-|---------|------|--------|---------|
+| Default                                               | Dark                                               | Forest                                               | Neutral                                               |
+| ----------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------- |
 | <img src="examples/output/default.png" width="180" /> | <img src="examples/output/dark.png" width="180" /> | <img src="examples/output/forest.png" width="180" /> | <img src="examples/output/neutral.png" width="180" /> |
 
 ## Development

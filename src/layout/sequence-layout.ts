@@ -1,23 +1,60 @@
-import type {
-  SequenceIR, LayoutOptions, FontMetricsProvider,
-} from '../types.js';
+import type { SequenceIR, LayoutOptions, FontMetricsProvider } from '../types.js';
 import { estimationFontMetrics } from './text-measure.js';
 
 /** Layout result specific to sequence diagrams */
 export interface SequenceLayoutResult {
   diagramType: 'sequence';
-  participants: Array<{ id: string; label: string; type: string; x: number; y: number; width: number; height: number }>;
+  participants: Array<{
+    id: string;
+    label: string;
+    type: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }>;
   messages: Array<{
-    id: string; from: string; to: string; label: string; messageType: string;
-    fromX: number; toX: number; y: number;
+    id: string;
+    from: string;
+    to: string;
+    label: string;
+    messageType: string;
+    fromX: number;
+    toX: number;
+    y: number;
     isSelf: boolean;
   }>;
-  notes: Array<{ from: string; to?: string; message: string; placement: string; x: number; y: number; width: number; height: number }>;
-  activations: Array<{ participant: string; startY: number; endY: number; x: number; width: number }>;
-  blocks: Array<{ type: string; label: string; x: number; y: number; width: number; height: number; sections: Array<{ label?: string; y: number }> }>;
+  notes: Array<{
+    from: string;
+    to?: string;
+    message: string;
+    placement: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }>;
+  activations: Array<{
+    participant: string;
+    startY: number;
+    endY: number;
+    x: number;
+    width: number;
+  }>;
+  blocks: Array<{
+    type: string;
+    label: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    sections: Array<{ label?: string; y: number }>;
+  }>;
   width: number;
   height: number;
-  nodes: []; edges: []; subgraphs: [];
+  nodes: [];
+  edges: [];
+  subgraphs: [];
 }
 
 const PARTICIPANT_WIDTH = 120;
@@ -36,7 +73,7 @@ export function layoutSequence(ir: SequenceIR, options?: LayoutOptions): Sequenc
   const fontFamily = 'Arial, Helvetica, sans-serif';
 
   // Compute participant widths based on label
-  const pWidths = ir.participants.map(p => {
+  const pWidths = ir.participants.map((p) => {
     const m = metrics.measureText(p.label, fontSize, fontFamily);
     return Math.max(m.width + 24, PARTICIPANT_WIDTH);
   });
@@ -46,10 +83,15 @@ export function layoutSequence(ir: SequenceIR, options?: LayoutOptions): Sequenc
   let currentX = PADDING;
   for (let i = 0; i < ir.participants.length; i++) {
     const w = pWidths[i];
-    pPositions.push({ id: ir.participants[i].id, x: currentX, centerX: currentX + w / 2, width: w });
+    pPositions.push({
+      id: ir.participants[i].id,
+      x: currentX,
+      centerX: currentX + w / 2,
+      width: w,
+    });
     currentX += w + PARTICIPANT_GAP;
   }
-  const participantLookup = new Map(pPositions.map(p => [p.id, p]));
+  const participantLookup = new Map(pPositions.map((p) => [p.id, p]));
 
   // Layout messages vertically
   let currentY = HEADER_Y + PARTICIPANT_HEIGHT + 30;
@@ -67,10 +109,15 @@ export function layoutSequence(ir: SequenceIR, options?: LayoutOptions): Sequenc
 
     const isSelf = msg.from === msg.to;
     layoutMessages.push({
-      id: msg.id, from: msg.from, to: msg.to, label: msg.label,
+      id: msg.id,
+      from: msg.from,
+      to: msg.to,
+      label: msg.label,
       messageType: msg.messageType,
-      fromX: fromP.centerX, toX: toP.centerX,
-      y: currentY, isSelf,
+      fromX: fromP.centerX,
+      toX: toP.centerX,
+      y: currentY,
+      isSelf,
     });
     currentY += isSelf ? MESSAGE_GAP + 20 : MESSAGE_GAP;
   }
@@ -91,8 +138,14 @@ export function layoutSequence(ir: SequenceIR, options?: LayoutOptions): Sequenc
     }
 
     layoutNotes.push({
-      from: note.from, to: note.to, message: note.message, placement: note.placement,
-      x: noteX, y: currentY, width: NOTE_WIDTH, height: NOTE_HEIGHT,
+      from: note.from,
+      to: note.to,
+      message: note.message,
+      placement: note.placement,
+      x: noteX,
+      y: currentY,
+      width: NOTE_WIDTH,
+      height: NOTE_HEIGHT,
     });
     currentY += NOTE_HEIGHT + 10;
   }
@@ -101,13 +154,15 @@ export function layoutSequence(ir: SequenceIR, options?: LayoutOptions): Sequenc
   const layoutActivations: SequenceLayoutResult['activations'] = [];
   for (const act of ir.activations) {
     const p = participantLookup.get(act.participant);
-    const startMsg = layoutMessages.find(m => m.id === act.startMessageId);
-    const endMsg = layoutMessages.find(m => m.id === act.endMessageId);
+    const startMsg = layoutMessages.find((m) => m.id === act.startMessageId);
+    const endMsg = layoutMessages.find((m) => m.id === act.endMessageId);
     if (p && startMsg && endMsg) {
       layoutActivations.push({
         participant: act.participant,
-        startY: startMsg.y, endY: endMsg.y,
-        x: p.centerX - ACTIVATION_WIDTH / 2, width: ACTIVATION_WIDTH,
+        startY: startMsg.y,
+        endY: endMsg.y,
+        x: p.centerX - ACTIVATION_WIDTH / 2,
+        width: ACTIVATION_WIDTH,
       });
     }
   }
@@ -115,20 +170,28 @@ export function layoutSequence(ir: SequenceIR, options?: LayoutOptions): Sequenc
   // Layout blocks
   const layoutBlocks: SequenceLayoutResult['blocks'] = [];
   for (const block of ir.blocks) {
-    const allMsgs = block.sections.flatMap(s => s.messages);
-    const msgLayouts = allMsgs.map(m => layoutMessages.find(lm => lm.id === m.id)).filter(Boolean) as typeof layoutMessages;
+    const allMsgs = block.sections.flatMap((s) => s.messages);
+    const msgLayouts = allMsgs
+      .map((m) => layoutMessages.find((lm) => lm.id === m.id))
+      .filter(Boolean) as typeof layoutMessages;
     if (msgLayouts.length === 0) continue;
 
-    const minY = Math.min(...msgLayouts.map(m => m.y)) - 25;
-    const maxY = Math.max(...msgLayouts.map(m => m.y)) + 25;
-    const minX = Math.min(...msgLayouts.map(m => Math.min(m.fromX, m.toX))) - 30;
-    const maxX = Math.max(...msgLayouts.map(m => Math.max(m.fromX, m.toX))) + 30;
+    const minY = Math.min(...msgLayouts.map((m) => m.y)) - 25;
+    const maxY = Math.max(...msgLayouts.map((m) => m.y)) + 25;
+    const minX = Math.min(...msgLayouts.map((m) => Math.min(m.fromX, m.toX))) - 30;
+    const maxX = Math.max(...msgLayouts.map((m) => Math.max(m.fromX, m.toX))) + 30;
 
     layoutBlocks.push({
-      type: block.type, label: block.label,
-      x: minX, y: minY, width: maxX - minX, height: maxY - minY,
-      sections: block.sections.map(s => {
-        const sectionMsgs = s.messages.map(m => layoutMessages.find(lm => lm.id === m.id)).filter(Boolean) as typeof layoutMessages;
+      type: block.type,
+      label: block.label,
+      x: minX,
+      y: minY,
+      width: maxX - minX,
+      height: maxY - minY,
+      sections: block.sections.map((s) => {
+        const sectionMsgs = s.messages
+          .map((m) => layoutMessages.find((lm) => lm.id === m.id))
+          .filter(Boolean) as typeof layoutMessages;
         return { label: s.label, y: sectionMsgs.length > 0 ? sectionMsgs[0].y - 15 : minY };
       }),
     });
@@ -138,16 +201,26 @@ export function layoutSequence(ir: SequenceIR, options?: LayoutOptions): Sequenc
   const totalHeight = currentY + PARTICIPANT_HEIGHT + PADDING;
 
   const participants = ir.participants.map((p, i) => ({
-    id: p.id, label: p.label, type: p.type,
-    x: pPositions[i].x, y: HEADER_Y, width: pWidths[i], height: PARTICIPANT_HEIGHT,
+    id: p.id,
+    label: p.label,
+    type: p.type,
+    x: pPositions[i].x,
+    y: HEADER_Y,
+    width: pWidths[i],
+    height: PARTICIPANT_HEIGHT,
   }));
 
   return {
-    diagramType: 'sequence', participants,
-    messages: layoutMessages, notes: layoutNotes,
-    activations: layoutActivations, blocks: layoutBlocks,
-    width: totalWidth, height: totalHeight,
-    nodes: [], edges: [], subgraphs: [],
+    diagramType: 'sequence',
+    participants,
+    messages: layoutMessages,
+    notes: layoutNotes,
+    activations: layoutActivations,
+    blocks: layoutBlocks,
+    width: totalWidth,
+    height: totalHeight,
+    nodes: [],
+    edges: [],
+    subgraphs: [],
   };
 }
-

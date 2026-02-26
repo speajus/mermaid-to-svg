@@ -1,6 +1,17 @@
 import { describe, it, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { renderMermaid, parse, layout, renderSvg, createTheme, defaultTheme, darkTheme, forestTheme, neutralTheme, cleanup } from '../src/index.js';
+import {
+  renderMermaid,
+  parse,
+  layout,
+  renderSvg,
+  createTheme,
+  defaultTheme,
+  darkTheme,
+  forestTheme,
+  neutralTheme,
+  cleanup,
+} from '../src/index.js';
 
 // Clean up jsdom after all tests to allow the process to exit
 after(() => cleanup());
@@ -72,10 +83,7 @@ describe('parse', () => {
   });
 
   it('throws on unsupported diagram types', async () => {
-    await assert.rejects(
-      () => parse('journey\n  title My Journey'),
-      /Unsupported diagram type/,
-    );
+    await assert.rejects(() => parse('journey\n  title My Journey'), /Unsupported diagram type/);
   });
 });
 
@@ -224,4 +232,3 @@ describe('theme system', () => {
     }
   });
 });
-

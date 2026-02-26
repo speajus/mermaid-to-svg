@@ -14,15 +14,27 @@ export interface PieLayoutResult {
   title: string;
   showData: boolean;
   slices: PieSliceLayout[];
-  centerX: number; centerY: number; radius: number;
-  width: number; height: number;
-  nodes: []; edges: []; subgraphs: [];
+  centerX: number;
+  centerY: number;
+  radius: number;
+  width: number;
+  height: number;
+  nodes: [];
+  edges: [];
+  subgraphs: [];
 }
 
 const COLORS = [
-  '#4e79a7', '#f28e2c', '#e15759', '#76b7b2',
-  '#59a14f', '#edc949', '#af7aa1', '#ff9da7',
-  '#9c755f', '#bab0ab',
+  '#4e79a7',
+  '#f28e2c',
+  '#e15759',
+  '#76b7b2',
+  '#59a14f',
+  '#edc949',
+  '#af7aa1',
+  '#ff9da7',
+  '#9c755f',
+  '#bab0ab',
 ];
 
 export async function layoutPie(ir: PieIR, options?: LayoutOptions): Promise<PieLayoutResult> {
@@ -55,10 +67,17 @@ export async function layoutPie(ir: PieIR, options?: LayoutOptions): Promise<Pie
   const height = radius * 2 + titleHeight + padding * 2;
 
   return {
-    diagramType: 'pie', title: ir.title, showData: ir.showData,
-    slices, centerX, centerY, radius,
-    width, height,
-    nodes: [], edges: [], subgraphs: [],
+    diagramType: 'pie',
+    title: ir.title,
+    showData: ir.showData,
+    slices,
+    centerX,
+    centerY,
+    radius,
+    width,
+    height,
+    nodes: [],
+    edges: [],
+    subgraphs: [],
   };
 }
-

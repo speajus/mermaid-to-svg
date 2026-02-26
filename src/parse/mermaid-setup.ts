@@ -46,4 +46,3 @@ export function cleanup() {
   delete (globalThis as Record<string, unknown>).document;
   delete (globalThis as Record<string, unknown>).self;
 }
-

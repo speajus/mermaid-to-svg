@@ -21,20 +21,28 @@ const SHAPE_MAP: Record<string, NodeShape> = {
 /** Map mermaid's stroke type to our edge type */
 function resolveEdgeType(stroke: string): IREdge['type'] {
   switch (stroke) {
-    case 'dotted': return 'dotted';
-    case 'thick': return 'thick';
-    default: return 'solid';
+    case 'dotted':
+      return 'dotted';
+    case 'thick':
+      return 'thick';
+    default:
+      return 'solid';
   }
 }
 
 /** Map mermaid's arrow type to our arrow head type */
 function resolveArrowHead(type: string): IREdge['arrowHead'] {
   switch (type) {
-    case 'arrow_point': return 'arrow';
-    case 'arrow_open': return 'open';
-    case 'arrow_cross': return 'cross';
-    case 'arrow_circle': return 'circle';
-    default: return 'arrow';
+    case 'arrow_point':
+      return 'arrow';
+    case 'arrow_open':
+      return 'open';
+    case 'arrow_cross':
+      return 'cross';
+    case 'arrow_circle':
+      return 'circle';
+    default:
+      return 'arrow';
   }
 }
 
@@ -62,10 +70,14 @@ export async function parseFlowchart(text: string): Promise<FlowchartIR> {
       label: v.text ?? id,
       shape: SHAPE_MAP[v.type] ?? 'rect',
       cssClasses: v.classes ? [...v.classes] : undefined,
-      style: v.styles ? Object.fromEntries(v.styles.map((s: string) => {
-        const [k, ...rest] = s.split(':');
-        return [k.trim(), rest.join(':').trim()];
-      })) : undefined,
+      style: v.styles
+        ? Object.fromEntries(
+            v.styles.map((s: string) => {
+              const [k, ...rest] = s.split(':');
+              return [k.trim(), rest.join(':').trim()];
+            }),
+          )
+        : undefined,
     });
   }
 
@@ -99,4 +111,3 @@ export async function parseFlowchart(text: string): Promise<FlowchartIR> {
     subgraphs,
   };
 }
-

@@ -9,11 +9,26 @@ interface LabelTextProps {
   fill: string;
   fontWeight?: string | number;
   textAnchor?: 'start' | 'middle' | 'end' | 'inherit';
-  dominantBaseline?: 'auto' | 'middle' | 'central' | 'hanging' | 'alphabetic' | 'ideographic' | 'mathematical' | 'text-before-edge' | 'text-after-edge' | 'inherit';
+  dominantBaseline?:
+    | 'auto'
+    | 'middle'
+    | 'central'
+    | 'hanging'
+    | 'alphabetic'
+    | 'ideographic'
+    | 'mathematical'
+    | 'text-before-edge'
+    | 'text-after-edge'
+    | 'inherit';
 }
 
 export function LabelText({
-  x, y, text, fontSize, fontFamily, fill,
+  x,
+  y,
+  text,
+  fontSize,
+  fontFamily,
+  fill,
   fontWeight = 'normal',
   textAnchor = 'middle',
   dominantBaseline = 'central',
@@ -83,15 +98,7 @@ export function EdgeLabel({ x, y, text, fontSize, fontFamily, fill, background }
         rx={3}
         ry={3}
       />
-      <LabelText
-        x={x}
-        y={y}
-        text={text}
-        fontSize={fontSize}
-        fontFamily={fontFamily}
-        fill={fill}
-      />
+      <LabelText x={x} y={y} text={text} fontSize={fontSize} fontFamily={fontFamily} fill={fill} />
     </g>
   );
 }
-
