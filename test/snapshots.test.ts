@@ -1,9 +1,9 @@
-import { describe, it } from 'node:test';
+import { describe, it, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderMermaid } from '../src/index.js';
+import { renderMermaid, cleanup } from '../src/index.js';
 import { Resvg } from '@resvg/resvg-js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -43,6 +43,8 @@ flowchart TD
 const THEMES = ['default', 'dark', 'forest', 'neutral'] as const;
 
 describe('example PNG snapshots', () => {
+  after(() => cleanup());
+
   for (const theme of THEMES) {
     it(`${theme} theme matches snapshot`, async () => {
       const snapshotPath = join(OUTPUT_DIR, `${theme}.png`);

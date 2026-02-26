@@ -1,9 +1,12 @@
-import { describe, it } from 'node:test';
+import { describe, it, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { parse } from '../src/parse/index.js';
+import { parse, cleanup } from '../src/parse/index.js';
 import { layout } from '../src/layout/index.js';
 import { renderSvg } from '../src/render/index.js';
 import { defaultTheme } from '../src/themes/index.js';
+
+// Clean up jsdom after all tests to allow the process to exit
+after(() => cleanup());
 
 // ── Sequence Diagrams ──────────────────────────────────────────────────────
 

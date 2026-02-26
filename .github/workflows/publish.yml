@@ -22,7 +22,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          registry-url: https://registry.npmjs.org
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -35,10 +34,8 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           npm version patch -m "v%s"
 
-      # actions/setup-node sets a placeholder NODE_AUTH_TOKEN that blocks OIDC.
-      # Clear it so npm uses the OIDC token instead.
-      # See: https://github.com/actions/setup-node/issues/1440
-      - run: NODE_AUTH_TOKEN="" npm publish --access public --provenance
+      - name: Publish to npm (OIDC trusted publishing)
+        run: npm publish --access public --provenance
 
       - name: Push version commit and tag
         run: git push --follow-tags

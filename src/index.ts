@@ -16,10 +16,12 @@ export type {
 
 export { createTheme, mergeThemes, defaultTheme, darkTheme, forestTheme, neutralTheme } from './themes/index.js';
 
-import { parse as parseDiagram } from './parse/index.js';
+import { parse as parseDiagram, cleanup as cleanupDom } from './parse/index.js';
 import { layout as layoutDiagram } from './layout/index.js';
 import { renderSvg as renderDiagramSvg } from './render/index.js';
 import { resolveTheme } from './themes/index.js';
+
+export { cleanupDom as cleanup };
 import type { DiagramIR, LayoutOptions, RenderOptions, RenderResult, Theme } from './types.js';
 import type { AnyLayoutResult } from './layout/index.js';
 

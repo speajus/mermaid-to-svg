@@ -8,6 +8,8 @@ import { parseGantt } from './gantt.js';
 import { parsePie } from './pie.js';
 import { parseMindmap } from './mindmap.js';
 
+export { cleanup } from './mermaid-setup.js';
+
 /**
  * Detect the diagram type from the first non-empty line of mermaid text.
  */
