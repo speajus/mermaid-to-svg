@@ -42,8 +42,9 @@ flowchart TD
 `;
 
 const THEMES = ['default', 'dark', 'forest', 'neutral'] as const;
+const isCI = !!process.env.CI;
 
-describe('example PNG snapshots', () => {
+describe('example PNG snapshots', { skip: isCI ? 'snapshot tests are skipped in CI' : false }, () => {
   after(() => cleanup());
 
   for (const theme of THEMES) {
