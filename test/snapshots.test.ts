@@ -1,6 +1,7 @@
 import { describe, it, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, existsSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderMermaid, cleanup } from '../src/index.js';
@@ -49,20 +50,22 @@ describe('example PNG snapshots', () => {
     it(`${theme} theme matches snapshot`, async () => {
       const snapshotPath = join(OUTPUT_DIR, `${theme}.png`);
 
+      const png = await renderToPng(DIAGRAM, theme);
+
       if (!existsSync(snapshotPath)) {
-        assert.fail(
-          `Snapshot not found: ${snapshotPath}. Run "node --import tsx examples/generate-theme-pngs.ts" to create it.`,
-        );
+        mkdirSync(dirname(snapshotPath), { recursive: true });
+        writeFileSync(snapshotPath, png);
+        return;
       }
 
-      const expected = readFileSync(snapshotPath);
-      const actual = await renderToPng(DIAGRAM, theme);
+      const expected = createHash('sha1').update(readFileSync(snapshotPath)).digest('hex');
+      const actual = createHash('sha1').update(png).digest('hex');
 
-      assert.deepStrictEqual(
+      assert.strictEqual(
         actual,
         expected,
         `PNG snapshot mismatch for "${theme}" theme. ` +
-          `Expected ${expected.length} bytes, got ${actual.length} bytes. ` +
+          `Expected hash ${expected}, got ${actual}. ` +
           `Run with UPDATE_SNAPSHOTS=1 to update, or regenerate with "node --import tsx examples/generate-theme-pngs.ts".`,
       );
     });
