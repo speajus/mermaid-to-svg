@@ -1,5 +1,4 @@
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import type { Theme } from '../types.js';
 import type { ERLayoutResult, EREntityLayout } from '../layout/er-layout.js';
 import { resolveEdgeStyle } from '../themes/index.js';
@@ -97,12 +96,7 @@ export function renderERElement(
   const edgeStyle = resolveEdgeStyle(theme, 'default');
 
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={layout.width}
-      height={layout.height}
-      style={{ background: theme.background }}
-    >
+    <>
       <defs>
         <marker
           id={`${idPrefix}-er-arrow`}
@@ -173,14 +167,6 @@ export function renderERElement(
       {layout.entities.map((e) => (
         <EREntity key={e.id} entity={e} theme={theme} />
       ))}
-    </svg>
+    </>
   );
-}
-
-export function renderERSvg(
-  layout: ERLayoutResult,
-  theme: Theme,
-  idPrefix: string = 'mermaid',
-): string {
-  return renderToStaticMarkup(renderERElement(layout, theme, idPrefix));
 }

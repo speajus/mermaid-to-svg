@@ -1,5 +1,4 @@
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import type { Theme } from '../types.js';
 import type { GanttLayoutResult } from '../layout/gantt-layout.js';
 
@@ -16,12 +15,7 @@ export function renderGanttElement(
   );
 
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={layout.width}
-      height={layout.height}
-      style={{ background: theme.background }}
-    >
+    <>
       {/* Title */}
       {layout.title && (
         <text
@@ -84,14 +78,6 @@ export function renderGanttElement(
           );
         });
       })()}
-    </svg>
+    </>
   );
-}
-
-export function renderGanttSvg(
-  layout: GanttLayoutResult,
-  theme: Theme,
-  idPrefix: string = 'mermaid',
-): string {
-  return renderToStaticMarkup(renderGanttElement(layout, theme, idPrefix));
 }

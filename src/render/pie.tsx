@@ -1,5 +1,4 @@
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import type { Theme } from '../types.js';
 import type { PieLayoutResult } from '../layout/pie-layout.js';
 
@@ -26,12 +25,7 @@ export function renderPieElement(
   const legendItemH = 22;
 
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={layout.width}
-      height={layout.height}
-      style={{ background: theme.background }}
-    >
+    <>
       {/* Title */}
       {title && (
         <text
@@ -96,14 +90,6 @@ export function renderPieElement(
           </text>
         </g>
       ))}
-    </svg>
+    </>
   );
-}
-
-export function renderPieSvg(
-  layout: PieLayoutResult,
-  theme: Theme,
-  idPrefix: string = 'mermaid',
-): string {
-  return renderToStaticMarkup(renderPieElement(layout, theme, idPrefix));
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import type { Theme } from '../types.js';
 import type { SequenceLayoutResult } from '../layout/sequence-layout.js';
 
@@ -264,18 +263,11 @@ export function renderSequenceElement(
   theme: Theme,
   idPrefix: string,
 ): React.ReactElement {
-  const { width, height, participants, messages, notes, activations, blocks } = layout;
+  const { height, participants, messages, notes, activations, blocks } = layout;
   const bottomY = height - 40 - 40; // PADDING - PARTICIPANT_HEIGHT
 
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox={`0 0 ${width} ${height}`}
-      width={width}
-      height={height}
-      role="img"
-    >
-      <rect width={width} height={height} fill={theme.background} />
+    <>
       <defs>
         <marker
           id={`${idPrefix}-arrow`}
@@ -309,14 +301,7 @@ export function renderSequenceElement(
       {notes.map((n, i) => (
         <NoteBox key={i} note={n} theme={theme} />
       ))}
-    </svg>
+    </>
   );
 }
 
-export function renderSequenceSvg(
-  layout: SequenceLayoutResult,
-  theme: Theme,
-  idPrefix: string,
-): string {
-  return renderToStaticMarkup(renderSequenceElement(layout, theme, idPrefix));
-}
