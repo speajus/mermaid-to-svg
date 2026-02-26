@@ -52,6 +52,10 @@ export function MermaidPreview({ code, theme }: { code: string; theme: Theme }) 
       if (!cancelled && containerRef.current) {
         containerRef.current.innerHTML = svg;
       }
+      // Clean up the temp sandbox element mermaid inserts into the body
+      // (this is separate from the SVG we just copied into our container)
+      const sandbox = document.querySelector(`#d${id}`);
+      sandbox?.remove();
     }).catch((err) => {
       if (!cancelled) {
         setError(err?.message || 'Failed to render diagram');
@@ -59,17 +63,10 @@ export function MermaidPreview({ code, theme }: { code: string; theme: Theme }) 
           containerRef.current.innerHTML = '';
         }
       }
-    }).finally(() => {
-      // Clean up the temp element mermaid inserts into the document body
-      const tempEl = document.getElementById(id);
-      tempEl?.remove();
     });
 
     return () => {
       cancelled = true;
-      // Also clean up on unmount/re-render
-      const tempEl = document.getElementById(id);
-      tempEl?.remove();
     };
   }, [code, themeKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
