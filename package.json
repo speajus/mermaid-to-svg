@@ -1,5 +1,6 @@
 {
   "name": "@speajus/mermaid-to-svg",
+  "private":false,
   "version": "0.1.0",
   "description": "Render Mermaid diagrams to SVG without a browser",
   "type": "module",
@@ -35,6 +36,7 @@
     "test": "node --import tsx --test test/**/*.test.ts",
     "typecheck": "tsc --noEmit"
   },
+  "packageManager": "pnpm@9.14.4",
   "license": "MIT",
   "dependencies": {
     "elkjs": "^0.9.0",

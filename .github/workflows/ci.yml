@@ -1,0 +1,163 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  typecheck:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Type-check
+        run: pnpm run typecheck
+
+  package-lint:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: publint — check package.json correctness
+        run: pnpm dlx publint
+
+      - name: attw — check TypeScript types resolve correctly
+        run: pnpm dlx @arethetypeswrong/cli --pack .
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Check for uncommitted changes
+        run: |
+          git add --all
+          if git diff --cached --quiet; then
+            echo "Working tree clean ✅"
+          else
+            echo "::error::Tests left behind changed or untracked files:"
+            git diff --cached --stat
+            exit 1
+          fi
+
+  pack-smoke-test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Pack tarball
+        run: pnpm pack
+
+      - name: Install tarball in temp project
+        run: |
+          mkdir /tmp/smoke-test && cd /tmp/smoke-test
+          npm init -y
+          npm install $GITHUB_WORKSPACE/speajus-mermaid-to-svg-*.tgz
+
+      - name: Smoke test — ESM import
+        run: |
+          cd /tmp/smoke-test
+          node --input-type=module -e "
+            import { renderMermaid } from '@speajus/mermaid-to-svg';
+            const { svg } = await renderMermaid('flowchart LR\n  A --> B');
+            if (!svg.includes('<svg')) {
+              console.error('Invalid SVG output');
+              process.exit(1);
+            }
+            console.log('ESM smoke test passed — SVG length:', svg.length);
+          "
+
+      - name: Smoke test — CJS require
+        run: |
+          cd /tmp/smoke-test
+          node -e "
+            const { renderMermaid } = require('@speajus/mermaid-to-svg');
+            renderMermaid('flowchart LR\n  A --> B').then(({ svg }) => {
+              if (!svg.includes('<svg')) {
+                console.error('Invalid SVG output');
+                process.exit(1);
+              }
+              console.log('CJS smoke test passed — SVG length:', svg.length);
+            });
+          "
+
