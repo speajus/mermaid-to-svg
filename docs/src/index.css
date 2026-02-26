@@ -139,6 +139,51 @@ select {
 
 .preview h2 { font-size: 1rem; margin-bottom: 1rem; color: var(--accent); }
 
+.preview-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1rem;
+}
+
+.mermaid-input { margin-bottom: 1rem; }
+.mermaid-input label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 0.4rem;
+}
+.mermaid-input textarea {
+  width: 100%;
+  min-height: 140px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--surface2);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.8rem;
+  resize: vertical;
+  line-height: 1.5;
+}
+.mermaid-input textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.mermaid-error {
+  background: rgba(233, 69, 96, 0.15);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--accent);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.mermaid-output svg { max-width: 100%; height: auto; }
+
 .svg-preview {
   border: 1px solid var(--surface2);
   border-radius: var(--radius);

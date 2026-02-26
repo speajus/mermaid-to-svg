@@ -1,6 +1,17 @@
 import { useState, useCallback, useRef } from 'react';
 import { THEMES, FONT_FAMILIES, NODE_STYLE_KEYS, type Theme } from './themes';
 import { SvgPreview } from './components/SvgPreview';
+import { MermaidPreview } from './components/MermaidPreview';
+
+const DEFAULT_MERMAID = `graph TD
+    A[Start] -->|Step 1| B(Process)
+    B --> C{Decision}
+    C -->|Yes| D[Result A]
+    C -->|No| E[Result B]
+    D --> F[End]
+    E --> F`;
+
+type PreviewMode = 'shapes' | 'mermaid';
 
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
@@ -28,6 +39,8 @@ export function App() {
   const [baseName, setBaseName] = useState('default');
   const [theme, setTheme] = useState<Theme>(() => deepClone(THEMES.default));
   const [activeNode, setActiveNode] = useState('default');
+  const [previewMode, setPreviewMode] = useState<PreviewMode>('shapes');
+  const [mermaidCode, setMermaidCode] = useState(DEFAULT_MERMAID);
   const toast = useToast();
 
   const update = useCallback((fn: (t: Theme) => void) => {
@@ -131,10 +144,35 @@ export function App() {
         </aside>
 
         <div className="preview">
-          <h2>Live Preview</h2>
-          <div className="svg-preview">
-            <SvgPreview theme={theme} />
+          <div className="preview-tabs">
+            <button className={`tab${previewMode === 'shapes' ? ' active' : ''}`}
+              onClick={() => setPreviewMode('shapes')}>Shape Preview</button>
+            <button className={`tab${previewMode === 'mermaid' ? ' active' : ''}`}
+              onClick={() => setPreviewMode('mermaid')}>Mermaid Diagram</button>
           </div>
+
+          {previewMode === 'shapes' ? (
+            <div className="svg-preview">
+              <SvgPreview theme={theme} />
+            </div>
+          ) : (
+            <>
+              <div className="mermaid-input">
+                <label htmlFor="mermaidCode">Mermaid Code</label>
+                <textarea
+                  id="mermaidCode"
+                  value={mermaidCode}
+                  onChange={e => setMermaidCode(e.target.value)}
+                  spellCheck={false}
+                  placeholder="Enter your mermaid diagram code..."
+                />
+              </div>
+              <div className="svg-preview">
+                <MermaidPreview code={mermaidCode} theme={theme} />
+              </div>
+            </>
+          )}
+
           <details>
             <summary>Theme JSON</summary>
             <pre className="theme-json">{JSON.stringify(theme, null, 2)}</pre>
