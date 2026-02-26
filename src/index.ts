@@ -7,7 +7,7 @@ export type {
   RenderOptions, RenderResult, LayoutOptions,
 } from './types.js';
 
-export { createTheme, mergeThemes, defaultTheme } from './themes/index.js';
+export { createTheme, mergeThemes, defaultTheme, darkTheme, forestTheme, neutralTheme } from './themes/index.js';
 
 import { parse as parseDiagram } from './parse/index.js';
 import { layout as layoutDiagram } from './layout/index.js';

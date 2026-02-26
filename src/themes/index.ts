@@ -1,7 +1,13 @@
 import type { Theme, NodeStyle, EdgeStyle } from '../types.js';
 import { defaultTheme } from './default.js';
+import { darkTheme } from './dark.js';
+import { forestTheme } from './forest.js';
+import { neutralTheme } from './neutral.js';
 
 export { defaultTheme } from './default.js';
+export { darkTheme } from './dark.js';
+export { forestTheme } from './forest.js';
+export { neutralTheme } from './neutral.js';
 
 function deepMerge<T extends Record<string, unknown>>(base: T, overrides: Partial<T>): T {
   const result = { ...base };
@@ -27,9 +33,16 @@ export function mergeThemes(base: Theme, overrides: Partial<Theme>): Theme {
   return deepMerge(base, overrides);
 }
 
-export function resolveTheme(theme: Theme | 'default' | undefined): Theme {
-  if (!theme || theme === 'default') return defaultTheme;
-  if (typeof theme === 'string') return defaultTheme; // future: dark, forest, neutral
+const themeMap: Record<string, Theme> = {
+  default: defaultTheme,
+  dark: darkTheme,
+  forest: forestTheme,
+  neutral: neutralTheme,
+};
+
+export function resolveTheme(theme: Theme | 'default' | 'dark' | 'forest' | 'neutral' | undefined): Theme {
+  if (!theme) return defaultTheme;
+  if (typeof theme === 'string') return themeMap[theme] ?? defaultTheme;
   return theme;
 }
 

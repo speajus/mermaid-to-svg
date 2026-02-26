@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { renderMermaid, parse, layout, renderSvg, createTheme, defaultTheme } from '../src/index.js';
+import { renderMermaid, parse, layout, renderSvg, createTheme, defaultTheme, darkTheme, forestTheme, neutralTheme } from '../src/index.js';
 
 describe('parse', () => {
   it('parses a simple flowchart', async () => {
@@ -147,6 +147,78 @@ describe('renderMermaid (full pipeline)', () => {
   it('accepts an idPrefix', async () => {
     const result = await renderMermaid('flowchart LR\n  A --> B', { idPrefix: 'custom' });
     assert.ok(result.svg.includes('custom-arrow'));
+  });
+
+  it('renders with dark theme by name', async () => {
+    const result = await renderMermaid('flowchart LR\n  A --> B', { theme: 'dark' });
+    assert.ok(result.svg.includes('#333333'), 'dark background');
+    assert.ok(result.svg.includes('#1f2020'), 'dark node fill');
+  });
+
+  it('renders with forest theme by name', async () => {
+    const result = await renderMermaid('flowchart LR\n  A --> B', { theme: 'forest' });
+    assert.ok(result.svg.includes('#cde498'), 'forest node fill');
+    assert.ok(result.svg.includes('#13540c'), 'forest node border');
+  });
+
+  it('renders with neutral theme by name', async () => {
+    const result = await renderMermaid('flowchart LR\n  A --> B', { theme: 'neutral' });
+    assert.ok(result.svg.includes('#eeeeee'), 'neutral node fill');
+    assert.ok(result.svg.includes('#999999'), 'neutral node border');
+  });
+
+  it('renders with dark theme object', async () => {
+    const result = await renderMermaid('flowchart LR\n  A --> B', { theme: darkTheme });
+    assert.ok(result.svg.includes('#333333'));
+  });
+
+  it('renders with forest theme object', async () => {
+    const result = await renderMermaid('flowchart LR\n  A --> B', { theme: forestTheme });
+    assert.ok(result.svg.includes('#cde498'));
+  });
+
+  it('renders with neutral theme object', async () => {
+    const result = await renderMermaid('flowchart LR\n  A --> B', { theme: neutralTheme });
+    assert.ok(result.svg.includes('#eeeeee'));
+  });
+});
+
+describe('theme system', () => {
+  it('createTheme merges with default', () => {
+    const custom = createTheme({ background: '#111' });
+    assert.equal(custom.background, '#111');
+    // Inherits rest from default
+    assert.equal(custom.fontFamily, defaultTheme.fontFamily);
+    assert.equal(custom.nodeStyles.default.fill, defaultTheme.nodeStyles.default.fill);
+  });
+
+  it('createTheme deep merges nodeStyles', () => {
+    const custom = createTheme({
+      nodeStyles: {
+        ...defaultTheme.nodeStyles,
+        default: { ...defaultTheme.nodeStyles.default, fill: '#ff0000' },
+      },
+    });
+    assert.equal(custom.nodeStyles.default.fill, '#ff0000');
+    assert.equal(custom.nodeStyles.default.stroke, defaultTheme.nodeStyles.default.stroke);
+  });
+
+  it('all built-in themes have required fields', () => {
+    const themes = [defaultTheme, darkTheme, forestTheme, neutralTheme];
+    for (const theme of themes) {
+      assert.ok(theme.background);
+      assert.ok(theme.primaryColor);
+      assert.ok(theme.fontFamily);
+      assert.ok(theme.nodeStyles.default);
+      assert.ok(theme.nodeStyles.decision);
+      assert.ok(theme.nodeStyles.rounded);
+      assert.ok(theme.nodeStyles.circle);
+      assert.ok(theme.nodeStyles.cylinder);
+      assert.ok(theme.nodeStyles.subroutine);
+      assert.ok(theme.edgeStyles.default);
+      assert.ok(theme.edgeStyles.dotted);
+      assert.ok(theme.edgeStyles.thick);
+    }
   });
 });
 
