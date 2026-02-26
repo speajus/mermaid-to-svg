@@ -19,4 +19,3 @@ export async function fetchMermaid() {
 export function cleanup() {
   mermaidInstance = null;
 }
-
