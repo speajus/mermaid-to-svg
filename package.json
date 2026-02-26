@@ -23,8 +23,14 @@
       }
     },
     "./browser": {
-      "types": "./dist/browser/index.d.ts",
-      "default": "./dist/browser/index.js"
+      "import": {
+        "types": "./dist/browser/index.d.ts",
+        "default": "./dist/browser/index.js"
+      },
+      "require": {
+        "types": "./dist/browser/index.d.cts",
+        "default": "./dist/browser/index.cjs"
+      }
     },
     "./themes": {
       "import": {
