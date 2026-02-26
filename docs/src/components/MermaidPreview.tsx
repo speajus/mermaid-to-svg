@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import mermaid from 'mermaid';
 import type { Theme } from '../themes';
 
 let renderCounter = 0;
 
-function themeToMermaidVars(theme: Theme): Record<string, string> {
+function buildThemeVars(theme: Theme): Record<string, string> {
+  const ns = theme.nodeStyles.default;
+  const es = theme.edgeStyles.default;
   return {
     primaryColor: theme.primaryColor,
     secondaryColor: theme.secondaryColor,
@@ -15,10 +17,10 @@ function themeToMermaidVars(theme: Theme): Record<string, string> {
     primaryBorderColor: theme.borderColor,
     fontFamily: theme.fontFamily,
     fontSize: `${theme.fontSize}px`,
-    nodeBorder: theme.nodeStyles.default.stroke,
-    mainBkg: theme.nodeStyles.default.fill,
-    nodeTextColor: theme.nodeStyles.default.textColor,
-    edgeLabelBackground: theme.edgeStyles.default.labelBackground,
+    nodeBorder: ns.stroke,
+    mainBkg: ns.fill,
+    nodeTextColor: ns.textColor,
+    edgeLabelBackground: es.labelBackground,
   };
 }
 
@@ -26,16 +28,20 @@ export function MermaidPreview({ code, theme }: { code: string; theme: Theme }) 
   const containerRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // Serialize theme to a string so we get a stable dependency for the effect
+  const themeKey = useMemo(() => JSON.stringify(buildThemeVars(theme)), [theme]);
+
   useEffect(() => {
     if (!code.trim() || !containerRef.current) return;
 
     const id = `mermaid-preview-${++renderCounter}`;
     setError(null);
 
+    // Re-initialize mermaid with fresh config each render
     mermaid.initialize({
       startOnLoad: false,
       theme: 'base',
-      themeVariables: themeToMermaidVars(theme),
+      themeVariables: buildThemeVars(theme),
       fontFamily: theme.fontFamily,
       securityLevel: 'loose',
     });
@@ -53,10 +59,19 @@ export function MermaidPreview({ code, theme }: { code: string; theme: Theme }) 
           containerRef.current.innerHTML = '';
         }
       }
+    }).finally(() => {
+      // Clean up the temp element mermaid inserts into the document body
+      const tempEl = document.getElementById(id);
+      tempEl?.remove();
     });
 
-    return () => { cancelled = true; };
-  }, [code, theme]);
+    return () => {
+      cancelled = true;
+      // Also clean up on unmount/re-render
+      const tempEl = document.getElementById(id);
+      tempEl?.remove();
+    };
+  }, [code, themeKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>
