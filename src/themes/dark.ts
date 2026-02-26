@@ -1,5 +1,7 @@
 import type { Theme } from '../types.js';
 
+const darkShadow = { dx: 2, dy: 3, blur: 5, color: 'rgba(0,0,0,0.45)' };
+
 export const darkTheme: Theme = {
   background: '#333333',
   primaryColor: '#1f2020',
@@ -17,10 +19,12 @@ export const darkTheme: Theme = {
       fill: '#1f2020',
       stroke: '#cccccc',
       strokeWidth: 1.5,
-      rx: 4,
-      ry: 4,
+      rx: 5,
+      ry: 5,
       textColor: '#e0dfdf',
       padding: 12,
+      gradient: { type: 'linear', from: '#2a2b2b', to: '#161717', direction: 180 },
+      shadow: darkShadow,
     },
     decision: {
       fill: '#1f2020',
@@ -28,6 +32,8 @@ export const darkTheme: Theme = {
       strokeWidth: 1.5,
       textColor: '#e0dfdf',
       padding: 12,
+      gradient: { type: 'linear', from: '#2a2b2b', to: '#161717', direction: 180 },
+      shadow: darkShadow,
     },
     rounded: {
       fill: '#484848',
@@ -37,6 +43,8 @@ export const darkTheme: Theme = {
       ry: 20,
       textColor: '#e0dfdf',
       padding: 12,
+      gradient: { type: 'linear', from: '#555555', to: '#3a3a3a', direction: 180 },
+      shadow: darkShadow,
     },
     circle: {
       fill: '#1f2020',
@@ -44,6 +52,8 @@ export const darkTheme: Theme = {
       strokeWidth: 1.5,
       textColor: '#e0dfdf',
       padding: 12,
+      gradient: { type: 'radial', from: '#2a2b2b', to: '#161717' },
+      shadow: darkShadow,
     },
     cylinder: {
       fill: '#484848',
@@ -51,6 +61,8 @@ export const darkTheme: Theme = {
       strokeWidth: 1.5,
       textColor: '#e0dfdf',
       padding: 12,
+      gradient: { type: 'linear', from: '#555555', to: '#3a3a3a', direction: 180 },
+      shadow: darkShadow,
     },
     subroutine: {
       fill: '#1f2020',
@@ -60,6 +72,8 @@ export const darkTheme: Theme = {
       ry: 0,
       textColor: '#e0dfdf',
       padding: 12,
+      gradient: { type: 'linear', from: '#2a2b2b', to: '#161717', direction: 180 },
+      shadow: darkShadow,
     },
   },
   edgeStyles: {

@@ -1,5 +1,7 @@
 import type { Theme } from '../types.js';
 
+const defaultShadow = { dx: 2, dy: 3, blur: 4, color: 'rgba(0,0,0,0.15)' };
+
 export const defaultTheme: Theme = {
   background: '#ffffff',
   primaryColor: '#ECECFF',
@@ -17,10 +19,12 @@ export const defaultTheme: Theme = {
       fill: '#ECECFF',
       stroke: '#9370DB',
       strokeWidth: 1.5,
-      rx: 4,
-      ry: 4,
+      rx: 5,
+      ry: 5,
       textColor: '#131300',
       padding: 12,
+      gradient: { type: 'linear', from: '#f8f8ff', to: '#DCDCFF', direction: 180 },
+      shadow: defaultShadow,
     },
     decision: {
       fill: '#ECECFF',
@@ -28,6 +32,8 @@ export const defaultTheme: Theme = {
       strokeWidth: 1.5,
       textColor: '#131300',
       padding: 12,
+      gradient: { type: 'linear', from: '#f8f8ff', to: '#DCDCFF', direction: 180 },
+      shadow: defaultShadow,
     },
     rounded: {
       fill: '#ffffde',
@@ -37,6 +43,8 @@ export const defaultTheme: Theme = {
       ry: 20,
       textColor: '#131300',
       padding: 12,
+      gradient: { type: 'linear', from: '#fffff0', to: '#f5f5c0', direction: 180 },
+      shadow: defaultShadow,
     },
     circle: {
       fill: '#ECECFF',
@@ -44,6 +52,8 @@ export const defaultTheme: Theme = {
       strokeWidth: 1.5,
       textColor: '#131300',
       padding: 12,
+      gradient: { type: 'radial', from: '#f8f8ff', to: '#DCDCFF' },
+      shadow: defaultShadow,
     },
     cylinder: {
       fill: '#ffffde',
@@ -51,6 +61,8 @@ export const defaultTheme: Theme = {
       strokeWidth: 1.5,
       textColor: '#131300',
       padding: 12,
+      gradient: { type: 'linear', from: '#fffff0', to: '#f5f5c0', direction: 180 },
+      shadow: defaultShadow,
     },
     subroutine: {
       fill: '#f5f5f0',
@@ -60,6 +72,8 @@ export const defaultTheme: Theme = {
       ry: 0,
       textColor: '#131300',
       padding: 12,
+      gradient: { type: 'linear', from: '#fafaf5', to: '#eaeae0', direction: 180 },
+      shadow: defaultShadow,
     },
   },
   edgeStyles: {
