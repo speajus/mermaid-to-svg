@@ -1,7 +1,7 @@
 {
   "name": "@speajus/mermaid-to-svg",
   "private": false,
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Render Mermaid diagrams to SVG without a browser",
   "type": "module",
   "main": "./dist/index.cjs",
