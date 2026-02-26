@@ -2,7 +2,7 @@
 
 export type DiagramType = 'flowchart' | 'sequence' | 'class' | 'state' | 'er' | 'gantt' | 'pie' | 'mindmap';
 
-export type DiagramIR = FlowchartIR; // expand union as more types are added
+export type DiagramIR = FlowchartIR | SequenceIR | ClassIR | StateIR;
 
 // ── Flowchart IR ───────────────────────────────────────────────────────────
 
@@ -41,6 +41,123 @@ export interface FlowchartIR {
   nodes: IRNode[];
   edges: IREdge[];
   subgraphs: IRSubgraph[];
+}
+
+// ── Sequence Diagram IR ────────────────────────────────────────────────────
+
+export type SequenceMessageType = 'solid' | 'dotted' | 'solid_cross' | 'dotted_cross' | 'solid_open' | 'dotted_open' | 'solid_point' | 'dotted_point' | 'bidirectional_solid' | 'bidirectional_dotted';
+
+export interface SequenceParticipant {
+  id: string;
+  label: string;
+  type: 'participant' | 'actor';
+}
+
+export interface SequenceMessage {
+  id: string;
+  from: string;
+  to: string;
+  label: string;
+  messageType: SequenceMessageType;
+}
+
+export interface SequenceNote {
+  from: string;
+  to?: string;
+  message: string;
+  placement: 'left' | 'right' | 'over';
+}
+
+export interface SequenceActivation {
+  participant: string;
+  startMessageId: string;
+  endMessageId: string;
+}
+
+export interface SequenceBlock {
+  type: 'loop' | 'alt' | 'opt' | 'par' | 'critical' | 'break' | 'rect';
+  label: string;
+  sections: SequenceBlockSection[];
+}
+
+export interface SequenceBlockSection {
+  label?: string;
+  messages: SequenceMessage[];
+}
+
+export interface SequenceIR {
+  type: 'sequence';
+  participants: SequenceParticipant[];
+  messages: SequenceMessage[];
+  notes: SequenceNote[];
+  activations: SequenceActivation[];
+  blocks: SequenceBlock[];
+}
+
+// ── Class Diagram IR ──────────────────────────────────────────────────────
+
+export interface ClassMember {
+  id: string;
+  text: string;
+  visibility: '+' | '-' | '#' | '~' | '';
+  memberType: 'attribute' | 'method';
+  returnType?: string;
+  parameters?: string;
+  classifier?: string;
+}
+
+export interface ClassDef {
+  id: string;
+  label: string;
+  members: ClassMember[];
+  methods: ClassMember[];
+  annotations: string[];
+  type: string;
+}
+
+export type ClassRelationType = 'inheritance' | 'composition' | 'aggregation' | 'association' | 'dependency' | 'realization' | 'lollipop';
+export type ClassLineType = 'solid' | 'dotted';
+
+export interface ClassRelationship {
+  id: string;
+  source: string;
+  target: string;
+  relationType: ClassRelationType;
+  lineType: ClassLineType;
+  sourceLabel?: string;
+  targetLabel?: string;
+  label?: string;
+}
+
+export interface ClassIR {
+  type: 'class';
+  classes: ClassDef[];
+  relationships: ClassRelationship[];
+  direction: 'TB' | 'BT' | 'LR' | 'RL';
+}
+
+// ── State Diagram IR ──────────────────────────────────────────────────────
+
+export interface StateDef {
+  id: string;
+  label: string;
+  type: 'default' | 'start' | 'end' | 'fork' | 'join' | 'choice' | 'note';
+  description?: string;
+  children?: StateDef[];
+  transitions?: StateTransition[];
+}
+
+export interface StateTransition {
+  id: string;
+  source: string;
+  target: string;
+  label?: string;
+}
+
+export interface StateIR {
+  type: 'state';
+  states: StateDef[];
+  transitions: StateTransition[];
 }
 
 // ── Layout Result ──────────────────────────────────────────────────────────
