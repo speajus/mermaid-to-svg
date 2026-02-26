@@ -5,13 +5,13 @@ Mermaid diagrams to SVG strings without a browser. No Puppeteer, no Playwright, 
 ## Install
 
 ```bash
-npm install mermaid-render
+npm install @speajus/mermaid-to-svg
 ```
 
 ## Quick Start
 
 ```typescript
-import { renderMermaid } from 'mermaid-render';
+import { renderMermaid } from '@speajus/mermaid-to-svg';
 
 const { svg, bounds } = await renderMermaid(`
   flowchart LR
@@ -32,11 +32,11 @@ Four built-in themes matching mermaid's defaults: `default`, `dark`, `forest`, `
 const { svg } = await renderMermaid(diagram, { theme: 'dark' });
 
 // Or import the theme object
-import { darkTheme } from 'mermaid-render';
+import { darkTheme } from '@speajus/mermaid-to-svg';
 const { svg } = await renderMermaid(diagram, { theme: darkTheme });
 
 // Or create a custom theme
-import { createTheme } from 'mermaid-render';
+import { createTheme } from '@speajus/mermaid-to-svg';
 const myTheme = createTheme({
   background: '#1a1a2e',
   primaryColor: '#e94560',
@@ -66,7 +66,7 @@ const result = await renderMermaid(mermaidText, {
 For advanced usage, each step is available separately:
 
 ```typescript
-import { parse, layout, renderSvg } from 'mermaid-render';
+import { parse, layout, renderSvg } from '@speajus/mermaid-to-svg';
 
 const ir = await parse(mermaidText); // Mermaid text → IR
 const positioned = await layout(ir); // IR → positioned graph
@@ -76,7 +76,7 @@ const svg = renderSvg(positioned); // positioned graph → SVG string
 ### Theme Utilities
 
 ```typescript
-import { createTheme, mergeThemes, defaultTheme } from 'mermaid-render';
+import { createTheme, mergeThemes, defaultTheme } from '@speajus/mermaid-to-svg';
 
 // Create from defaults with overrides
 const theme = createTheme({ background: '#111' });
@@ -90,7 +90,7 @@ const merged = mergeThemes(baseTheme, overrides);
 Use `@resvg/resvg-js` to convert SVG output to PNG (no browser needed):
 
 ```typescript
-import { renderMermaid } from 'mermaid-render';
+import { renderMermaid } from '@speajus/mermaid-to-svg';
 import { Resvg } from '@resvg/resvg-js';
 import { writeFileSync } from 'node:fs';
 
