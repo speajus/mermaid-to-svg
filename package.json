@@ -9,6 +9,10 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "browser": {
+        "types": "./dist/browser/index.d.ts",
+        "default": "./dist/browser/index.js"
+      },
       "import": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
@@ -17,6 +21,10 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
+    },
+    "./browser": {
+      "types": "./dist/browser/index.d.ts",
+      "default": "./dist/browser/index.js"
     },
     "./themes": {
       "import": {
@@ -34,6 +42,7 @@
   },
   "files": [
     "dist",
+    "dist/browser",
     "README.md"
   ],
   "author": "Justin Spears <speajus@gmail.com>",
