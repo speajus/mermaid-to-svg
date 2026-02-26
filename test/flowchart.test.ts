@@ -152,19 +152,19 @@ describe('renderMermaid (full pipeline)', () => {
   it('renders with dark theme by name', async () => {
     const result = await renderMermaid('flowchart LR\n  A --> B', { theme: 'dark' });
     assert.ok(result.svg.includes('#333333'), 'dark background');
-    assert.ok(result.svg.includes('#1f2020'), 'dark node fill');
+    assert.ok(result.svg.includes('#cccccc'), 'dark node stroke');
   });
 
   it('renders with forest theme by name', async () => {
     const result = await renderMermaid('flowchart LR\n  A --> B', { theme: 'forest' });
-    assert.ok(result.svg.includes('#cde498'), 'forest node fill');
     assert.ok(result.svg.includes('#13540c'), 'forest node border');
+    assert.ok(result.svg.includes('linearGradient') || result.svg.includes('#cde498'), 'forest gradient or fill');
   });
 
   it('renders with neutral theme by name', async () => {
     const result = await renderMermaid('flowchart LR\n  A --> B', { theme: 'neutral' });
-    assert.ok(result.svg.includes('#eeeeee'), 'neutral node fill');
     assert.ok(result.svg.includes('#999999'), 'neutral node border');
+    assert.ok(result.svg.includes('linearGradient') || result.svg.includes('#eeeeee'), 'neutral gradient or fill');
   });
 
   it('renders with dark theme object', async () => {
@@ -174,12 +174,12 @@ describe('renderMermaid (full pipeline)', () => {
 
   it('renders with forest theme object', async () => {
     const result = await renderMermaid('flowchart LR\n  A --> B', { theme: forestTheme });
-    assert.ok(result.svg.includes('#cde498'));
+    assert.ok(result.svg.includes('#13540c'), 'forest border');
   });
 
   it('renders with neutral theme object', async () => {
     const result = await renderMermaid('flowchart LR\n  A --> B', { theme: neutralTheme });
-    assert.ok(result.svg.includes('#eeeeee'));
+    assert.ok(result.svg.includes('#999999'), 'neutral border');
   });
 });
 

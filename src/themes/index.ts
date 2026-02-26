@@ -46,13 +46,18 @@ export function resolveTheme(theme: Theme | 'default' | 'dark' | 'forest' | 'neu
   return theme;
 }
 
-export function resolveNodeStyle(theme: Theme, shape: string): NodeStyle {
+/** Map a shape name to its theme style key */
+export function resolveNodeStyleKey(shape: string): string {
   const mapping: Record<string, string> = {
     diamond: 'decision',
     round: 'rounded',
     stadium: 'rounded',
   };
-  const styleKey = mapping[shape] ?? shape;
+  return mapping[shape] ?? shape;
+}
+
+export function resolveNodeStyle(theme: Theme, shape: string): NodeStyle {
+  const styleKey = resolveNodeStyleKey(shape);
   return theme.nodeStyles[styleKey] ?? theme.nodeStyles.default;
 }
 

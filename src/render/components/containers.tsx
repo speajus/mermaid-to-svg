@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Theme } from '../../types.js';
+import type { Theme, GradientConfig, ShadowConfig } from '../../types.js';
 
 interface SvgRootProps {
   width: number;
@@ -27,6 +27,16 @@ export function SvgRoot({ width, height, padding, background, idPrefix, children
   );
 }
 
+/** Generate a unique gradient ID from a GradientConfig */
+export function gradientId(idPrefix: string, key: string): string {
+  return `${idPrefix}-grad-${key}`;
+}
+
+/** Generate the shadow filter ID */
+export function shadowFilterId(idPrefix: string, key: string): string {
+  return `${idPrefix}-shadow-${key}`;
+}
+
 interface ArrowDefsProps {
   idPrefix: string;
   theme: Theme;
@@ -34,8 +44,23 @@ interface ArrowDefsProps {
 
 export function ArrowDefs({ idPrefix, theme }: ArrowDefsProps) {
   const color = theme.edgeStyles.default.arrowColor;
+
+  // Collect unique gradients and shadows from node styles
+  const gradients: Array<{ key: string; config: GradientConfig }> = [];
+  const shadows: Array<{ key: string; config: ShadowConfig }> = [];
+
+  for (const [key, style] of Object.entries(theme.nodeStyles)) {
+    if (style.gradient) {
+      gradients.push({ key, config: style.gradient });
+    }
+    if (style.shadow) {
+      shadows.push({ key, config: style.shadow });
+    }
+  }
+
   return (
     <defs>
+      {/* Arrow markers */}
       <marker
         id={`${idPrefix}-arrow`}
         viewBox="0 0 10 10"
@@ -80,6 +105,44 @@ export function ArrowDefs({ idPrefix, theme }: ArrowDefsProps) {
       >
         <circle cx="5" cy="5" r="4" fill={color} />
       </marker>
+
+      {/* Gradient definitions */}
+      {gradients.map(({ key, config }) => {
+        const angle = config.direction ?? 180;
+        const rad = (angle * Math.PI) / 180;
+        const x1 = 50 - Math.sin(rad) * 50;
+        const y1 = 50 - Math.cos(rad) * 50;
+        const x2 = 50 + Math.sin(rad) * 50;
+        const y2 = 50 + Math.cos(rad) * 50;
+
+        if (config.type === 'radial') {
+          return (
+            <radialGradient key={key} id={gradientId(idPrefix, key)} cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor={config.from} />
+              <stop offset="100%" stopColor={config.to} />
+            </radialGradient>
+          );
+        }
+
+        return (
+          <linearGradient
+            key={key}
+            id={gradientId(idPrefix, key)}
+            x1={`${x1}%`} y1={`${y1}%`}
+            x2={`${x2}%`} y2={`${y2}%`}
+          >
+            <stop offset="0%" stopColor={config.from} />
+            <stop offset="100%" stopColor={config.to} />
+          </linearGradient>
+        );
+      })}
+
+      {/* Shadow filter definitions */}
+      {shadows.map(({ key, config }) => (
+        <filter key={key} id={shadowFilterId(idPrefix, key)} x="-20%" y="-20%" width="150%" height="150%">
+          <feDropShadow dx={config.dx} dy={config.dy} stdDeviation={config.blur} floodColor={config.color} floodOpacity="1" />
+        </filter>
+      ))}
     </defs>
   );
 }

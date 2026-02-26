@@ -1,5 +1,7 @@
 import type { Theme } from '../types.js';
 
+const forestShadow = { dx: 2, dy: 3, blur: 4, color: 'rgba(19,84,12,0.2)' };
+
 export const forestTheme: Theme = {
   background: '#ffffff',
   primaryColor: '#cde498',
@@ -17,10 +19,12 @@ export const forestTheme: Theme = {
       fill: '#cde498',
       stroke: '#13540c',
       strokeWidth: 1.5,
-      rx: 4,
-      ry: 4,
+      rx: 5,
+      ry: 5,
       textColor: '#000000',
       padding: 12,
+      gradient: { type: 'linear', from: '#e0f0b0', to: '#b8d480', direction: 180 },
+      shadow: forestShadow,
     },
     decision: {
       fill: '#cde498',
@@ -28,6 +32,8 @@ export const forestTheme: Theme = {
       strokeWidth: 1.5,
       textColor: '#000000',
       padding: 12,
+      gradient: { type: 'linear', from: '#e0f0b0', to: '#b8d480', direction: 180 },
+      shadow: forestShadow,
     },
     rounded: {
       fill: '#cdffb2',
@@ -37,6 +43,8 @@ export const forestTheme: Theme = {
       ry: 20,
       textColor: '#000000',
       padding: 12,
+      gradient: { type: 'linear', from: '#ddffc8', to: '#b0e890', direction: 180 },
+      shadow: forestShadow,
     },
     circle: {
       fill: '#cde498',
@@ -44,6 +52,8 @@ export const forestTheme: Theme = {
       strokeWidth: 1.5,
       textColor: '#000000',
       padding: 12,
+      gradient: { type: 'radial', from: '#e0f0b0', to: '#b8d480' },
+      shadow: forestShadow,
     },
     cylinder: {
       fill: '#cdffb2',
@@ -51,6 +61,8 @@ export const forestTheme: Theme = {
       strokeWidth: 1.5,
       textColor: '#000000',
       padding: 12,
+      gradient: { type: 'linear', from: '#ddffc8', to: '#b0e890', direction: 180 },
+      shadow: forestShadow,
     },
     subroutine: {
       fill: '#d8e8c8',
@@ -60,6 +72,8 @@ export const forestTheme: Theme = {
       ry: 0,
       textColor: '#000000',
       padding: 12,
+      gradient: { type: 'linear', from: '#e8f0d8', to: '#c8d8b0', direction: 180 },
+      shadow: forestShadow,
     },
   },
   edgeStyles: {
