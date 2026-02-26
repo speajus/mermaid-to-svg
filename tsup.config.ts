@@ -44,7 +44,7 @@ export default defineConfig([
     entry: {
       'browser/index': 'src/index.ts',
     },
-    format: ['esm'],
+    format: ['esm', 'cjs'],
     dts: true,
     splitting: false,
     clean: false,
