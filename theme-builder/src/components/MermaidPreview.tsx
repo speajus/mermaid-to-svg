@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactElement } from 'react';
-import { parse, layout, renderElement } from '@mermaid-to-svg/index';
+import { parse, layout, renderElement } from '@speajus/mermaid-to-svg/browser';
 import type { Theme } from '../themes';
 
 export function MermaidPreview({ code, theme }: { code: string; theme: Theme }) {
