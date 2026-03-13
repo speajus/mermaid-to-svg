@@ -1,8 +1,35 @@
 # @speajus/mermaid-to-svg
 
-Mermaid diagrams to SVG strings without a browser. No Puppeteer, no Playwright, no headless Chrome — just Node.js (also works in browser).
+[![npm version](https://img.shields.io/npm/v/@speajus/mermaid-to-svg)](https://www.npmjs.com/package/@speajus/mermaid-to-svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+Render Mermaid diagrams to SVG strings **without a browser**. No Puppeteer, no Playwright, no headless Chrome — just Node.js. Also works in the browser.
+
+<p align="center">
+  <img src="examples/output/flowchart-default.png" width="320" alt="Flowchart" />
+  <img src="examples/output/sequence-dark.png" width="320" alt="Sequence diagram" />
+</p>
+<p align="center">
+  <img src="examples/output/er-forest.png" width="320" alt="ER diagram" />
+  <img src="examples/output/state-neutral.png" width="320" alt="State diagram" />
+</p>
+
+## Features
+
+- **Zero browser dependencies** — pure Node.js rendering via React `renderToStaticMarkup()`
+- **Browser support** — works in bundled web apps too
+- **8 diagram types** — flowchart, sequence, class, state, ER, gantt, pie, mindmap
+- **4 built-in themes** — default, dark, forest, neutral — plus custom theme support
+- **Pipeline API** — use the full pipeline or individual steps (parse, layout, render)
+- **SVG to PNG** — pair with `@resvg/resvg-js` for raster output, no browser needed
 
 ## Install
+
+```bash
+pnpm add @speajus/mermaid-to-svg
+```
+
+or
 
 ```bash
 npm install @speajus/mermaid-to-svg
@@ -25,9 +52,11 @@ console.log(svg); // <svg xmlns="...">...</svg>
 
 ## Themes
 
-Four built-in themes matching mermaid's defaults: `default`, `dark`, `forest`, `neutral`.
-Try it out in the [Theme Builder](https://speajus.github.io/mermaid-to-svg).
-[![Screenshot](./image.png)](<[destination_URL](https://speajus.github.io/mermaid-to-svg)>)
+Four built-in themes matching Mermaid's defaults: `default`, `dark`, `forest`, `neutral`.
+
+Try them interactively in the [Theme Builder](https://speajus.github.io/mermaid-to-svg).
+
+[![Theme Builder Screenshot](./image.png)](https://speajus.github.io/mermaid-to-svg)
 
 ```typescript
 // Use by name
@@ -47,73 +76,27 @@ const myTheme = createTheme({
 const { svg } = await renderMermaid(diagram, { theme: myTheme });
 ```
 
-## API
+### Theme Gallery
 
-### `renderMermaid(input, options?)`
+**Flowchart** across all four themes:
 
-Full pipeline: parse → layout → render. Returns `{ svg, bounds, diagramType }`.
+| Default                                                         | Dark                                                         | Forest                                                         | Neutral                                                         |
+| --------------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------- | --------------------------------------------------------------- |
+| <img src="examples/output/flowchart-default.png" width="180" /> | <img src="examples/output/flowchart-dark.png" width="180" /> | <img src="examples/output/flowchart-forest.png" width="180" /> | <img src="examples/output/flowchart-neutral.png" width="180" /> |
 
-```typescript
-const result = await renderMermaid(mermaidText, {
-  theme: 'dark', // 'default' | 'dark' | 'forest' | 'neutral' | Theme object
-  padding: 20, // pixels around the diagram
-  idPrefix: 'mermaid', // unique prefix for SVG element IDs
-  fontMetrics: provider, // custom FontMetricsProvider for text measurement
-  layoutOptions: {}, // ELK layout options override
-});
-```
+**Sequence** across all four themes:
 
-### Individual Pipeline Steps
+| Default                                                        | Dark                                                        | Forest                                                        | Neutral                                                        |
+| -------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------- |
+| <img src="examples/output/sequence-default.png" width="180" /> | <img src="examples/output/sequence-dark.png" width="180" /> | <img src="examples/output/sequence-forest.png" width="180" /> | <img src="examples/output/sequence-neutral.png" width="180" /> |
 
-For advanced usage, each step is available separately:
+**Pie chart** across all four themes:
 
-```typescript
-import { parse, layout, renderSvg } from '@speajus/mermaid-to-svg';
+| Default                                                   | Dark                                                   | Forest                                                   | Neutral                                                   |
+| --------------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------- | --------------------------------------------------------- |
+| <img src="examples/output/pie-default.png" width="180" /> | <img src="examples/output/pie-dark.png" width="180" /> | <img src="examples/output/pie-forest.png" width="180" /> | <img src="examples/output/pie-neutral.png" width="180" /> |
 
-const ir = await parse(mermaidText); // Mermaid text → IR
-const positioned = await layout(ir); // IR → positioned graph
-const svg = renderSvg(positioned); // positioned graph → SVG string
-```
-
-### Theme Utilities
-
-```typescript
-import { createTheme, mergeThemes, defaultTheme } from '@speajus/mermaid-to-svg';
-
-// Create from defaults with overrides
-const theme = createTheme({ background: '#111' });
-
-// Merge two themes
-const merged = mergeThemes(baseTheme, overrides);
-```
-
-## SVG to PNG
-
-Use `@resvg/resvg-js` to convert SVG output to PNG (no browser needed):
-
-```typescript
-import { renderMermaid } from '@speajus/mermaid-to-svg';
-import { Resvg } from '@resvg/resvg-js';
-import { writeFileSync } from 'node:fs';
-
-const { svg, bounds } = await renderMermaid(diagram);
-const resvg = new Resvg(svg, {
-  fitTo: { mode: 'width', value: bounds.width * 2 },
-});
-writeFileSync('diagram.png', resvg.render().asPng());
-```
-
-## How It Works
-
-```
-Mermaid Text → Parser (mermaid) → IR → Layout (ELK.js) → SVG (React renderToStaticMarkup)
-```
-
-1. **Parse** — Uses mermaid's internal parser to extract nodes, edges, subgraphs, and direction
-2. **Layout** — ELK.js computes positions and edge routing (layered algorithm, orthogonal edges)
-3. **Render** — React components produce clean SVG via `renderToStaticMarkup()` — no browser DOM needed
-
-## Diagram Support
+## Diagram Types
 
 ### Flowchart
 
@@ -231,22 +214,80 @@ mindmap
 
 <img src="examples/output/mindmap-default.png" width="400" alt="Mindmap" />
 
-### Themes
+## API
 
-Four built-in themes — here's the flowchart in each:
+### `renderMermaid(input, options?)`
 
-| Default                                                         | Dark                                                         | Forest                                                         | Neutral                                                         |
-| --------------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------- | --------------------------------------------------------------- |
-| <img src="examples/output/flowchart-default.png" width="180" /> | <img src="examples/output/flowchart-dark.png" width="180" /> | <img src="examples/output/flowchart-forest.png" width="180" /> | <img src="examples/output/flowchart-neutral.png" width="180" /> |
+Full pipeline: parse, layout, render. Returns `{ svg, bounds, diagramType }`.
+
+```typescript
+const result = await renderMermaid(mermaidText, {
+  theme: 'dark', // 'default' | 'dark' | 'forest' | 'neutral' | Theme object
+  padding: 20, // pixels around the diagram
+  idPrefix: 'mermaid', // unique prefix for SVG element IDs
+  fontMetrics: provider, // custom FontMetricsProvider for text measurement
+  layoutOptions: {}, // ELK layout options override
+});
+```
+
+### Individual Pipeline Steps
+
+For advanced usage, each step is available separately:
+
+```typescript
+import { parse, layout, renderSvg } from '@speajus/mermaid-to-svg';
+
+const ir = await parse(mermaidText); // Mermaid text → IR
+const positioned = await layout(ir); // IR → positioned graph
+const svg = renderSvg(positioned); // positioned graph → SVG string
+```
+
+### Theme Utilities
+
+```typescript
+import { createTheme, mergeThemes, defaultTheme } from '@speajus/mermaid-to-svg';
+
+// Create from defaults with overrides
+const theme = createTheme({ background: '#111' });
+
+// Merge two themes
+const merged = mergeThemes(baseTheme, overrides);
+```
+
+## SVG to PNG
+
+Use `@resvg/resvg-js` to convert SVG output to PNG (no browser needed):
+
+```typescript
+import { renderMermaid } from '@speajus/mermaid-to-svg';
+import { Resvg } from '@resvg/resvg-js';
+import { writeFileSync } from 'node:fs';
+
+const { svg, bounds } = await renderMermaid(diagram);
+const resvg = new Resvg(svg, {
+  fitTo: { mode: 'width', value: bounds.width * 2 },
+});
+writeFileSync('diagram.png', resvg.render().asPng());
+```
+
+## How It Works
+
+```
+Mermaid Text → Parser (mermaid) → IR → Layout (ELK.js) → SVG (React renderToStaticMarkup)
+```
+
+1. **Parse** — Uses mermaid's internal parser to extract nodes, edges, subgraphs, and direction
+2. **Layout** — ELK.js computes positions and edge routing (layered algorithm, orthogonal edges)
+3. **Render** — React components produce clean SVG via `renderToStaticMarkup()` — no browser DOM needed
 
 ## Development
 
 ```bash
-npm test          # Run tests (node:test)
-npm run build     # Build with tsup (ESM + CJS + types)
-npm run typecheck  # Type check with tsc
+pnpm test           # Run tests (node:test)
+pnpm build          # Build with tsup (ESM + CJS + types)
+pnpm typecheck      # Type check with tsc
 
-# Generate theme sample PNGs
+# Generate example PNGs
 node --import tsx examples/generate-theme-pngs.ts
 ```
 
