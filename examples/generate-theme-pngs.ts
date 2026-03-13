@@ -25,7 +25,8 @@ async function main() {
   // Generate theme variants (flowchart only, for backward compat)
   for (const theme of themes) {
     // Generate one sample per diagram type (default theme)
-    for (const [name, diagram] of Object.entries(DIAGRAMS)) {
+    for (const [fname, diagram] of Object.entries(DIAGRAMS)) {
+      const name = fname.replace(/\.mmd$/, '');
       const { svg, bounds } = await renderMermaid(diagram, { theme });
       writeFileSync(join(OUTPUT_DIR, `${name}-${theme}.svg`), svg);
       const resvg = new Resvg(svg, {
