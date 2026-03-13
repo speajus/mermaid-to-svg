@@ -80,20 +80,20 @@ const { svg } = await renderMermaid(diagram, { theme: myTheme });
 
 **Flowchart** across all four themes:
 
-| Default | Dark | Forest | Neutral |
-| --- | --- | --- | --- |
+| Default                                                         | Dark                                                         | Forest                                                         | Neutral                                                         |
+| --------------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------- | --------------------------------------------------------------- |
 | <img src="examples/output/flowchart-default.png" width="180" /> | <img src="examples/output/flowchart-dark.png" width="180" /> | <img src="examples/output/flowchart-forest.png" width="180" /> | <img src="examples/output/flowchart-neutral.png" width="180" /> |
 
 **Sequence** across all four themes:
 
-| Default | Dark | Forest | Neutral |
-| --- | --- | --- | --- |
+| Default                                                        | Dark                                                        | Forest                                                        | Neutral                                                        |
+| -------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------- |
 | <img src="examples/output/sequence-default.png" width="180" /> | <img src="examples/output/sequence-dark.png" width="180" /> | <img src="examples/output/sequence-forest.png" width="180" /> | <img src="examples/output/sequence-neutral.png" width="180" /> |
 
 **Pie chart** across all four themes:
 
-| Default | Dark | Forest | Neutral |
-| --- | --- | --- | --- |
+| Default                                                   | Dark                                                   | Forest                                                   | Neutral                                                   |
+| --------------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------- | --------------------------------------------------------- |
 | <img src="examples/output/pie-default.png" width="180" /> | <img src="examples/output/pie-dark.png" width="180" /> | <img src="examples/output/pie-forest.png" width="180" /> | <img src="examples/output/pie-neutral.png" width="180" /> |
 
 ## Diagram Types
