@@ -8,8 +8,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUTPUT_DIR = join(__dirname, 'output');
 mkdirSync(OUTPUT_DIR, { recursive: true });
 const MMD = /\.mmd$/;
-const DIAGRAM_NAMES = readdirSync(__dirname).filter(v=>MMD.test(v));
-console.log('found diagrams '+DIAGRAM_NAMES);
+const DIAGRAM_NAMES = readdirSync(__dirname).filter((v) => MMD.test(v));
+console.log('found diagrams ' + DIAGRAM_NAMES);
 
 function loadDiagram(name: string): string {
   return readFileSync(join(__dirname, name), 'utf-8');
