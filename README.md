@@ -29,6 +29,12 @@ Render Mermaid diagrams to SVG strings **without a browser**. No Puppeteer, no P
 pnpm add @speajus/mermaid-to-svg
 ```
 
+or
+
+```bash
+npm install @speajus/mermaid-to-svg
+```
+
 ## Quick Start
 
 ```typescript
