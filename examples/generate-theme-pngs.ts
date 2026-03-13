@@ -1,17 +1,18 @@
 import { renderMermaid } from '../src/index.js';
 import { Resvg } from '@resvg/resvg-js';
-import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
+import { writeFileSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUTPUT_DIR = join(__dirname, 'output');
 mkdirSync(OUTPUT_DIR, { recursive: true });
-
-const DIAGRAM_NAMES = ['flowchart', 'sequence', 'class', 'state', 'er', 'gantt', 'pie', 'mindmap'];
+const MMD = /\.mmd$/;
+const DIAGRAM_NAMES = readdirSync(__dirname).filter(v=>MMD.test(v));
+console.log('found diagrams '+DIAGRAM_NAMES);
 
 function loadDiagram(name: string): string {
-  return readFileSync(join(__dirname, `${name}.mmd`), 'utf-8');
+  return readFileSync(join(__dirname, name), 'utf-8');
 }
 
 const DIAGRAMS: Record<string, string> = Object.fromEntries(
